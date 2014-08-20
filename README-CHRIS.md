@@ -1,5 +1,7 @@
 bower install angular-bootstrap
 
+http://bolsterweb.com/2012/06/grabbing-image-data-external-source-canvas-element/
+
 
 http://www.w3schools.com/tags/tag_input.asp
 https://github.com/angular-ui/bootstrap
