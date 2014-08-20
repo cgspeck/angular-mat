@@ -53,6 +53,7 @@ angular.module('myApp.controllers', [])
 
     $scope.updateCanvas = function() {
         normaliseFigures();
+        // make our canvasses as wide as they can be
         var results_div = document.getElementById('resultsDiv');
         console.log("XXXX");
         console.log(results_div.offsetWidth);
