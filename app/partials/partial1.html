@@ -1,1 +1,46 @@
-<p>This is the partial for view 1.</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-xs-12">
+            <div class="col-md-6" class="form-group">
+                <h1>Mat Sheet Calculator</h1>
+                <fieldset>
+                    <legend>Frame / Mat Sheet</legend>
+                    <label for="sheet_width">Width:</label>
+                    <input type="text" id="sheet_width" type="number"  ng-model="sheet_width" class="form-control"></input>
+                    <label for="sheet_height">Height:</label>
+                    <input type="text" id="sheet_height" type="number" ng-model="sheet_height" class="form-control"></input>
+                </fieldset>
+                <br/>
+                <fieldset>
+                    <legend>Image</legend>
+                    <label for="image_width">Width:</label>
+                    <input type="text" id="image_width" type="number"  ng-model="image_width" class="form-control"></input>
+                    <label for="image_height">Height:</label>
+                    <input type="text" id="image_height" type="number" ng-model="image_height" class="form-control"></input>
+                </fieldset>
+                <br/>
+                <fieldset>
+                    <legend>Options</legend>
+                    <label for="options_units">Units:</label>
+                    <!-- Single button -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                      id="options_units">
+                        Metric (mm) <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Metric (cm)</a></li>
+                        <li><a href="#">Imperial fractional inches</a></li>
+                      </ul>
+                    </div>              
+                    <input type="text" id="image_width" type="number"  ng-model="image_width" class="form-control"></input>
+                    <label for="image_height">Height:</label>
+                    <input type="text" id="image_height" type="number" ng-model="image_height" class="form-control"></input>
+                </fieldset>
+            </div>
+            <div class="col-md-6" class="form-group">
+                RESULT GOES HERE
+            </div>
+        </div>
+    </div>
+</div>
