@@ -4,42 +4,53 @@
             <div class="col-md-6" class="form-group">
                 <h1>Mat Sheet Calculator</h1>
                 <fieldset>
-                    <legend>Frame / Mat Sheet</legend>
+                    <legend>Frame / Mat Sheet dimensions</legend>
                     <label for="sheet_width">Width:</label>
                     <input type="text" id="sheet_width" type="number"  ng-model="sheet_width" class="form-control"></input>
                     <label for="sheet_height">Height:</label>
                     <input type="text" id="sheet_height" type="number" ng-model="sheet_height" class="form-control"></input>
+                    <label for="sheet_units" ng-model="sheet_units">Units:</label>
+                    <select id="sheet_units">
+                      <option value="mm">mm</option>
+                      <option value="cm">cm</option>
+                      <option value="inches">inches</option>
+                    </select>
                 </fieldset>
                 <br/>
                 <fieldset>
-                    <legend>Image</legend>
+                    <legend>Image dimensions</legend>
                     <label for="image_width">Width:</label>
                     <input type="text" id="image_width" type="number"  ng-model="image_width" class="form-control"></input>
                     <label for="image_height">Height:</label>
                     <input type="text" id="image_height" type="number" ng-model="image_height" class="form-control"></input>
+                    <label for="image_units">Units:</label>
+                    <select id="image_units" ng-model="image_units">
+                      <option value="mm">mm</option>
+                      <option value="cm">cm</option>
+                      <option value="inches">inches</option>
+                    </select>
+
                 </fieldset>
                 <br/>
                 <fieldset>
                     <legend>Options</legend>
+                    <label for="options_horizontal_overlap">Cut horizontal distance:</label>
+                    <input type="text" id="options_horizontal_overlap" type="number"  ng-model="options_horizontal_overlap" class="form-control"></input>
+                    <label for="options_bottom_weight">Bottom weight:</label>
+                    <input type="text" id="options_bottom_weight" type="number"  ng-model="options_bottom_weight" class="form-control"></input>
                     <label for="options_units">Units:</label>
-                    <!-- Single button -->
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                      id="options_units">
-                        Metric (mm) <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Metric (cm)</a></li>
-                        <li><a href="#">Imperial fractional inches</a></li>
-                      </ul>
-                    </div>              
-                    <input type="text" id="image_width" type="number"  ng-model="image_width" class="form-control"></input>
-                    <label for="image_height">Height:</label>
-                    <input type="text" id="image_height" type="number" ng-model="image_height" class="form-control"></input>
+                    <select id="options_units" ng-model="options_units">
+                      <option value="mm">mm</option>
+                      <option value="cm">cm</option>
+                      <option value="inches">inches</option>
+                    </select>                    
                 </fieldset>
             </div>
-            <div class="col-md-6" class="form-group">
-                RESULT GOES HERE
+            <div class="col-md-6" class="form-group" id="resultsDiv">
+                <button id="update" ng-click="updateCanvas()">Update</button>
+                <br/>
+                <legend>Front of mat</legend>
+                <canvas id="front_canvas" width="100%"></canvas>
             </div>
         </div>
     </div>
