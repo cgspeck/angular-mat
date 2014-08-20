@@ -1,3 +1,6 @@
+bower install angular-bootstrap
+
+
 http://www.w3schools.com/tags/tag_input.asp
 https://github.com/angular-ui/bootstrap
 https://github.com/angular-ui/bootstrap/tree/gh-pages#build-files
