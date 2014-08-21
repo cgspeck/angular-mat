@@ -3,11 +3,12 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('MyCtrl1', ['$scope', '$log', function($scope, $log) {
+  .controller('MyCtrl1', ['$scope', '$log', '$filter',
+    function($scope, $log, $filter) {
     $scope.sheet_width = 400; // internally store values as metric mm
     $scope.sheet_height = 500; // internally store values as metric mm
-    $scope.image_width = 190;
-    $scope.image_height = 295;
+    $scope.image_width = 200;
+    $scope.image_height = 300;
     $scope.options_horizontal_overlap = 3; // mm
     $scope.options_bottom_weight = 25;
 
@@ -181,6 +182,34 @@ angular.module('myApp.controllers', [])
         }
     }
 
+    function calculateDistances() {
+        // Bevel - front
+        $scope._window_left_offset = ($scope._sheet_width - $scope._image_width) / 2;  //internally using mm
+        $scope._window_top_offset = ($scope._sheet_height - $scope._image_height) / 2;  //internally using mm
+        $scope._window_bottom_offset = $scope._window_top_offset;
+        $scope._window_top_offset = $scope._window_top_offset - $scope._options_bottom_weight;
+        $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
+        // Window - back
+        $scope._bevel_left_offset = $scope._window_left_offset - $scope._options_horizontal_overlap;  //internally using mm
+        $scope._bevel_top_offset = $scope._window_top_offset  - $scope._options_horizontal_overlap;  //internally using mm
+        $scope._bevel_bottom_offset = $scope._window_bottom_offset  + $scope._options_horizontal_overlap;  //internally using mm
+
+        //now convert to human friendly and selected format
+        var fields = ['window_left_offset', 'window_top_offset', 'window_bottom_offset', 'bevel_left_offset', 'bevel_top_offset', 'bevel_bottom_offset'];
+        fields.map( function(item) {
+            var decimal_places = 0; // default for mm
+            switch ($scope.options_units) {
+                case "cm":
+                    decimal_places = 2;
+                    break;
+                case "inches":
+                    decimal_places = 2;
+                    break;
+            }
+            $scope[item] = $filter('number')(convert_unit($scope['_' + item], "mm", $scope.options_units), decimal_places);
+        })
+    }
+
     $scope.updateCanvas = function() {
         normaliseFigures();
         // make our canvasses as wide as they can be
@@ -192,6 +221,7 @@ angular.module('myApp.controllers', [])
             canvas.width = results_div.offsetWidth;
             clearCanvas(canvas);
             drawSheetAndImage(canvas, canvas_id);
+            calculateDistances();
         });
         /*var canvas = document.getElementById('front_canvas');
         var ctx=canvas.getContext("2d");

@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8 col-xs-12">
-            <div class="col-md-6" class="form-group">
+        <div class="col-md-12 col-xs-12">
+            <div class="col-md-4" class="form-group">
                 <h1>Mat Sheet Calculator</h1>
                 <fieldset>
                     <legend>Frame / Mat Sheet dimensions</legend>
@@ -34,7 +34,7 @@
                 <br/>
                 <fieldset>
                     <legend>Options</legend>
-                    <label for="options_horizontal_overlap">Cut horizontal distance:</label>
+                    <label for="options_horizontal_overlap">Bevel horizontal distance:</label>
                     <input type="text" id="options_horizontal_overlap" type="number"  ng-model="options_horizontal_overlap" class="form-control"></input>
                     <label for="options_bottom_weight">Bottom weight:</label>
                     <input type="text" id="options_bottom_weight" type="number"  ng-model="options_bottom_weight" class="form-control"></input>
@@ -46,14 +46,30 @@
                     </select>                    
                 </fieldset>
             </div>
-            <div class="col-md-6" class="form-group" id="resultsDiv">
+            <div class="col-md-4" class="form-group" id="resultsDiv">
                 <button id="update" ng-click="updateCanvas()">Update</button>
                 <br/>
-                <legend>Front of mat</legend>
+                <legend>Front Preview</legend>
                 <canvas id="front_canvas" height="300px"></canvas>
                 <br/>
-                <legend>Back of mat</legend>
+                <legend>Back Preview</legend>
                 <canvas id="back_canvas" height="300px"></canvas>
+            </div>
+            <div class="col-md-4" class="form-group" id="calulationsDiv">
+                <legend>Calculations - Front</legend>
+                Bevel distance from sides of mat: {{bevel_left_offset}} {{options_units}}
+                <br/>
+                Bevel distance from top of mat: {{bevel_top_offset}} {{options_units}}
+                <br/>
+                Bevel distance from bottom of mat: {{bevel_bottom_offset}} {{options_units}}
+                <br/>
+                <br/>
+                <legend>Calculations - Back</legend>
+                Window distance from sides of mat: {{window_left_offset}} {{options_units}}
+                <br/>
+                Window distance from top of mat: {{window_top_offset}} {{options_units}}
+                <br/>
+                Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
             </div>
         </div>
     </div>
