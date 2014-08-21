@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('MyCtrl1', ['$scope', '$log', '$filter',
+  .controller('matBoardCalculator', ['$scope', '$log', '$filter',
     function($scope, $log, $filter) {
     $scope.sheet_width = 400; // internally store values as metric mm
     $scope.sheet_height = 500; // internally store values as metric mm
