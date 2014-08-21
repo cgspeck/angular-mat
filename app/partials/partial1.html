@@ -1,8 +1,8 @@
+<h1>Mat Sheet Calculator</h1>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="col-md-4" class="form-group">
-                <h1>Mat Sheet Calculator</h1>
                 <fieldset>
                     <legend>Frame / Mat Sheet dimensions</legend>
                     <label for="sheet_width">Width:</label>
@@ -46,15 +46,6 @@
                     </select>                    
                 </fieldset>
             </div>
-            <div class="col-md-4" class="form-group" id="resultsDiv">
-                <button id="update" ng-click="updateCanvas()">Update</button>
-                <br/>
-                <legend>Front Preview</legend>
-                <canvas id="front_canvas" height="300px"></canvas>
-                <br/>
-                <legend>Back Preview</legend>
-                <canvas id="back_canvas" height="300px"></canvas>
-            </div>
             <div class="col-md-4" class="form-group" id="calulationsDiv">
                 <legend>Calculations - Front</legend>
                 Bevel distance from sides of mat: {{bevel_left_offset}} {{options_units}}
@@ -70,6 +61,16 @@
                 Window distance from top of mat: {{window_top_offset}} {{options_units}}
                 <br/>
                 Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
+                <br/>
+                <button id="update" ng-click="updateCanvas()">Update</button>
+            </div>
+            <div class="col-md-4" class="form-group" id="resultsDiv">
+                <br/>
+                <legend>Front Preview</legend>
+                <canvas id="front_canvas" height="300px"></canvas>
+                <br/>
+                <legend>Back Preview</legend>
+                <canvas id="back_canvas" height="300px"></canvas>
             </div>
         </div>
     </div>
