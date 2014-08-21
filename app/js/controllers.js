@@ -20,7 +20,6 @@ angular.module('myApp.controllers', [])
     var canvas_padding = 10; // px
 
     function convert_unit(value, from_unit, to_unit) {
-        $log.debug(from_unit);
         if (from_unit == to_unit) {
             return value;
         }
@@ -33,7 +32,6 @@ angular.module('myApp.controllers', [])
 
         if (from_unit == "inches") {
             m_value = value * 25.4;
-            $log.debug("converted from inches " + m_value);
         }
 
         if (to_unit == "mm") {
@@ -50,11 +48,9 @@ angular.module('myApp.controllers', [])
     }
 
     function normaliseFigures() {
-        $log.debug($scope['sheet_units']);
         var fields = ['sheet_width', 'sheet_height', 'image_width', 'image_height', 'options_horizontal_overlap', 'options_bottom_weight'];
         fields.map( function(item) {
             $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
-            $log.debug($scope['_' + item]);
         })
     }
 
@@ -112,13 +108,6 @@ angular.module('myApp.controllers', [])
         var left_sheet_offset = canvas_padding + ((avaliable_width - calculated_sheet_width) / 2);
         var top_sheet_offset = canvas_padding + ((avaliable_height - calculated_sheet_height) / 2);
 
-        $log.debug(scale);
-        $log.debug(avaliable_width);
-        $log.debug(avaliable_height);
-        //$log.debug(left_offset);
-        //$log.debug(top_offset);
-        $log.debug(calculated_sheet_width);
-        $log.debug(calculated_sheet_height);
         // drawing the sheet
         ctx.rect(left_sheet_offset, top_sheet_offset, calculated_sheet_width, calculated_sheet_height);
         ctx.lineWidth=3;
@@ -144,11 +133,6 @@ angular.module('myApp.controllers', [])
             var img=new Image();
             img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
             img.onload = function(ctx){
-                $log.debug('onload finished');
-                $log.debug(cxt);
-                $log.debug(left_image_offset);
-                $log.debug(parseInt(left_image_offset));
-                $log.debug(top_image_offset);
                 cxt.drawImage(img, left_image_offset, top_image_offset,
                     calculated_image_width, calculated_image_height);
             };
@@ -159,26 +143,12 @@ angular.module('myApp.controllers', [])
                 top_image_offset - calculated_overlap,
                 calculated_image_width + (calculated_overlap * 2),
                 calculated_image_height + (calculated_overlap * 2));
-            //ctx.stroke();
         } else {
-            // TODO: the space is just a void, size of the image
-            $log.debug("drawing hole");
-            /*ctx.rect(left_image_offset,
-                top_image_offset,
-                calculated_image_width,
-                calculated_image_height);*/
-            //ctx = canvas.getContext("2d");
             ctx.fillStyle = canvas_colour;
             ctx.fillRect(left_image_offset,
                 top_image_offset,
                 calculated_image_width,
                 calculated_image_height);
-            //ctx.fillStyle=canvas_colour;
-            //ctx.fill();
-            /*$log.debug(left_image_offset);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "Black";
-            ctx.stroke();*/
         }
     }
 
@@ -216,18 +186,12 @@ angular.module('myApp.controllers', [])
         var results_div = document.getElementById('resultsDiv');
 
         ['front_canvas', 'back_canvas'].map( function(canvas_id) {
-            $log.debug(canvas_id);
             var canvas = document.getElementById(canvas_id);
             canvas.width = results_div.offsetWidth;
             clearCanvas(canvas);
             drawSheetAndImage(canvas, canvas_id);
             calculateDistances();
         });
-        /*var canvas = document.getElementById('front_canvas');
-        var ctx=canvas.getContext("2d");
-        //      startx, starty, endx, endy
-        ctx.rect(20,20,300,100);
-        ctx.stroke();*/
     }
 
     //initalise the form
