@@ -14,10 +14,12 @@ angular.module('myApp.controllers', [])
     $scope.options_units = "mm";
     $scope.image_units = "mm";
     $scope.sheet_units = "mm";
-
+    
+    var canvas_colour = "LightGray";
     var canvas_padding = 10; // px
 
     function convert_unit(value, from_unit, to_unit) {
+        $log.debug(from_unit);
         if (from_unit == to_unit) {
             return value;
         }
@@ -25,11 +27,12 @@ angular.module('myApp.controllers', [])
         var m_value = value;
 
         if (from_unit == "cm") {
-            m_value = value / 10;
+            m_value = value * 10;
         }
 
-        if (from_unit == "inch") {
+        if (from_unit == "inches") {
             m_value = value * 25.4;
+            $log.debug("converted from inches " + m_value);
         }
 
         if (to_unit == "mm") {
@@ -37,18 +40,19 @@ angular.module('myApp.controllers', [])
         }
 
         if (to_unit == "cm") {
-            return m_value * 10;
+            return m_value / 10;
         }
 
-        if (to_unit == "inch") {
+        if (to_unit == "inches") {
             return m_value / 25.4
         }
     }
 
     function normaliseFigures() {
+        $log.debug($scope['sheet_units']);
         var fields = ['sheet_width', 'sheet_height', 'image_width', 'image_height', 'options_horizontal_overlap', 'options_bottom_weight'];
         fields.map( function(item) {
-            $scope['_' + item] = convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm")
+            $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
             $log.debug($scope['_' + item]);
         })
     }
