@@ -15,6 +15,8 @@ angular.module('myApp.controllers', [])
     $scope.options_units = "mm";
     $scope.image_units = "mm";
     $scope.sheet_units = "mm";
+
+    $scope.canvasSupported = !!window.HTMLCanvasElement;
     
     var canvas_colour = "LightGray";
     var canvas_padding = 10; // px
@@ -192,16 +194,19 @@ angular.module('myApp.controllers', [])
         }
         //$log.debug($scope.myForm);
         normaliseFigures();
-        // make our canvasses as wide as they can be
-        var results_div = document.getElementById('resultsDiv');
 
-        ['front_canvas', 'back_canvas'].map( function(canvas_id) {
-            var canvas = document.getElementById(canvas_id);
-            canvas.width = results_div.offsetWidth;
-            clearCanvas(canvas);
-            drawSheetAndImage(canvas, canvas_id);
-            calculateDistances();
-        });
+        if ($scope.canvasSupported) {
+            // make our canvasses as wide as they can be
+            var results_div = document.getElementById('previewDiv');
+            // now draw on them
+            ['front_canvas', 'back_canvas'].map( function(canvas_id) {
+                var canvas = document.getElementById(canvas_id);
+                canvas.width = results_div.offsetWidth;
+                clearCanvas(canvas);
+                drawSheetAndImage(canvas, canvas_id);
+            });
+        }
+        calculateDistances();
     }
 
     //initalise the form

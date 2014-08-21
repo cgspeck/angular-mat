@@ -9,9 +9,9 @@
                         <label for="sheet_width">Width:</label>
                         <input id="sheet_width" type="number" step="any" ng-model="sheet_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="sheet_height">Height:</label>
-                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" required></input>
+                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                         <label for="sheet_units" ng-model="sheet_units">Units:</label>
-                        <select id="sheet_units" ng-model="sheet_units">
+                        <select id="sheet_units" ng-model="sheet_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -21,11 +21,11 @@
                     <fieldset>
                         <legend>Image Dimensions</legend>
                         <label for="image_width">Width:</label>
-                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" required></input>
+                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="image_height">Height:</label>
-                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" required></input>
+                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                         <label for="image_units">Units:</label>
-                        <select id="image_units" ng-model="image_units">
+                        <select id="image_units" ng-model="image_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -36,11 +36,11 @@
                     <fieldset>
                         <legend>Options</legend>
                         <label for="options_horizontal_overlap">Bevel horizontal distance:</label>
-                        <input id="options_horizontal_overlap" type="number" step="any" ng-model="options_horizontal_overlap" class="form-control" min="0" required></input>
+                        <input id="options_horizontal_overlap" type="number" step="any" ng-model="options_horizontal_overlap" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="options_bottom_weight">Bottom weight:</label>
-                        <input type="number" step="any" id="options_bottom_weight"  ng-model="options_bottom_weight" class="form-control" min="0" required></input>
+                        <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="options_units">Units:</label>
-                        <select id="options_units" ng-model="options_units">
+                        <select id="options_units" ng-model="options_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -66,13 +66,18 @@
                 <br/>
                 <button id="update" ng-click="updateCanvas()">Update</button>
             </div>
-            <div class="col-md-4" class="form-group" id="resultsDiv">
+            <div class="col-md-4" class="form-group" id="previewDiv" ng-show="canvasSupported">
                 <br/>
                 <legend>Front Preview</legend>
                 <canvas id="front_canvas" height="300px"></canvas>
                 <br/>
                 <legend>Back Preview</legend>
                 <canvas id="back_canvas" height="300px"></canvas>
+            </div>
+            <div class="col-md-4" class="form-group" id="sadDiv" ng-hide="canvasSupported">
+                <br/>
+                <legend>HTML 5 Canvas not supported</legend>
+                To see previews, you need to upgrade your browser by installing an up-to-date version of <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a> or <a href="https://www.google.com.au/chrome/">Google Chrome</a>.
             </div>
           </div>
     </div>
