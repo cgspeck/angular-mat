@@ -181,6 +181,16 @@ angular.module('myApp.controllers', [])
     }
 
     $scope.updateCanvas = function() {
+        // check if the form exists and break if invalid
+        // form will not be defined the first time the screen loads
+        if (angular.isDefined($scope.myForm)) {
+            if ($scope.myForm.$invalid) {
+                // TODO: display validation errors?
+                return;
+            }
+
+        }
+        //$log.debug($scope.myForm);
         normaliseFigures();
         // make our canvasses as wide as they can be
         var results_div = document.getElementById('resultsDiv');
