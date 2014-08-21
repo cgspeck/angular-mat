@@ -124,86 +124,47 @@ angular.module('myApp.controllers', [])
             // http://placekitten.com/g/200/300
             var calculated_image_width = $scope._image_width * scale;
             var calculated_image_height = $scope._image_height * scale;
+            var sy = $scope._options_overlap * scale;
+            var sx = sy;
+            var swidth = calculated_image_width - (sy * 2);
+            var sheight = calculated_image_height - (sx * 2);
+
+            var left_image_offset = canvas_padding + ((avaliable_width  - calculated_image_width) / 2);
+            left_image_offset = left_image_offset + ($scope._options_overlap * scale);
+            var top_image_offset = canvas_padding + ((avaliable_height - calculated_image_height) / 2);
+            top_image_offset = top_image_offset + ($scope._options_overlap * scale);
+
+            top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
+
+            calculated_image_width = calculated_image_width - ($scope._options_overlap * scale);
+            calculated_image_height = calculated_image_height - ($scope._options_overlap * scale);
+
+            var img=new Image();
+            img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
+            img.onload = function(ctx){
+                cxt.drawImage(img, sx, sy, swidth, sheight, left_image_offset, top_image_offset,
+                    calculated_image_width, calculated_image_height);
+            };
+        } else {
+            //draw the printed page first
+            var cxt = canvas.getContext("2d");
+
+            //now the obligatory cat picture
+            var calculated_image_width = $scope._image_width * scale;
+            var calculated_image_height = $scope._image_height * scale;
             var left_image_offset = canvas_padding + ((avaliable_width  - calculated_image_width) / 2);
             var top_image_offset = canvas_padding + ((avaliable_height - calculated_image_height) / 2);
 
             top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
+
             var img=new Image();
             img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
             img.onload = function(ctx){
                 cxt.drawImage(img, left_image_offset, top_image_offset,
                     calculated_image_width, calculated_image_height);
-            };
-            // TODO: need to mark where the gradient is
-            /*ctx.lineWidth = calculated_overlap;
-            ctx.strokeStyle = "OrangeRed";
-            ctx.strokeRect(left_image_offset - calculated_overlap, 
-                top_image_offset - calculated_overlap,
-                calculated_image_width + (calculated_overlap * 2),
-                calculated_image_height + (calculated_overlap * 2));*/
-
+            };            
         }
 
-        /*
-
-        $scope._window_left_offset = ($scope._sheet_width - $scope._image_width) / 2;  //internally using mm
-        $scope._window_top_offset = ($scope._sheet_height - $scope._image_height) / 2;  //internally using mm
-        $scope._window_bottom_offset = $scope._window_top_offset;
-        $scope._window_top_offset = $scope._window_top_offset - $scope._options_bottom_weight;
-        $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
-
-        ['_window_left_offset', '_window_top_offset', '_window_bottom_offset'].map( function(item) {
-            $scope[item] = $scope[item] + $scope._options_overlap;
-        })
-        // Print - for back
-        $scope._print_left_offset = ($scope._sheet_width - $scope._print_width) / 2;  //internally using mm
-        $scope._print_top_offset = ($scope._sheet_height - $scope._print_height) / 2;  //internally using mm
-        $scope._print_bottom_offset = $scope._print_top_offset + $scope._options_bottom_weight;
-        $scope._print_top_offset = $scope._print_top_offset - $scope._options_bottom_weight;
-
-
-
-
-
-
-        var calculated_overlap = $scope._options_horizontal_overlap * scale;
-
-
-
-        //calculate the position of the image or hole
-        var calculated_image_width = $scope._image_width * scale;
-        var calculated_image_height = $scope._image_height * scale;
-
-        var left_image_offset = left_sheet_offset + ((calculated_sheet_width - calculated_image_width)/2) + calculated_overlap;
-        var top_image_offset = top_sheet_offset + ((calculated_sheet_height - calculated_image_height)/2) + calculated_overlap;
-
-        //take the bottom weighting into account
-        top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
-
-        if (canvas_id == "front_canvas") {
-            //now put a picture in
-            var cxt = canvas.getContext("2d");
-            // http://placekitten.com/g/200/300
-            var img=new Image();
-            img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
-            img.onload = function(ctx){
-                cxt.drawImage(img, left_image_offset, top_image_offset,
-                    calculated_image_width, calculated_image_height);
-            };
-            // TODO: need to mark where the gradient is
-            ctx.lineWidth = calculated_overlap;
-            ctx.strokeStyle = "OrangeRed";
-            ctx.strokeRect(left_image_offset - calculated_overlap, 
-                top_image_offset - calculated_overlap,
-                calculated_image_width + (calculated_overlap * 2),
-                calculated_image_height + (calculated_overlap * 2));
-        } else {
-            ctx.fillStyle = canvas_colour;
-            ctx.fillRect(left_image_offset,
-                top_image_offset,
-                calculated_image_width,
-                calculated_image_height);
-        }*/
     }
 
     function calculateDistances() {
@@ -215,7 +176,7 @@ angular.module('myApp.controllers', [])
         $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
 
         ['_window_left_offset', '_window_top_offset', '_window_bottom_offset'].map( function(item) {
-            $scope[item] = $scope[item] + $scope._options_overlap;
+            $scope[item] = $scope[item] + $scope._options_overlap; // adjust for overlap
         })
         // Print - for back
         $scope._print_left_offset = ($scope._sheet_width - $scope._print_width) / 2;  //internally using mm
