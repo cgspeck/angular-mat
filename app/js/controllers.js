@@ -6,10 +6,12 @@ angular.module('myApp.controllers', [])
   .controller('matBoardCalculator', ['$scope', '$log', '$filter',
     function($scope, $log, $filter) {
     $scope.sheet_width = 400; // internally store values as metric mm
-    $scope.sheet_height = 500; // internally store values as metric mm
+    $scope.sheet_height = 400; // internally store values as metric mm
+    $scope.print_width = 300;
+    $scope.print_height = 300;
     $scope.image_width = 200;
-    $scope.image_height = 300;
-    $scope.options_horizontal_overlap = 3; // mm
+    $scope.image_height = 200;
+    $scope.options_overlap = 3; // mm
     $scope.options_bottom_weight = 25;
 
     $scope.options_units = "mm";
@@ -50,7 +52,9 @@ angular.module('myApp.controllers', [])
     }
 
     function normaliseFigures() {
-        var fields = ['sheet_width', 'sheet_height', 'image_width', 'image_height', 'options_horizontal_overlap', 'options_bottom_weight'];
+        var fields = ['sheet_width', 'sheet_height', 'image_width',
+            'image_height', 'options_overlap',
+            'options_bottom_weight', 'print_height', 'print_width'];
         fields.map( function(item) {
             $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
         })
@@ -99,24 +103,72 @@ angular.module('myApp.controllers', [])
         ctx.fillStyle   = canvas_colour; // set canvas background color
         ctx.fillRect  (0,   0, canvas.width, canvas.height);  // now fill the canvas
 
-        var scale = calculateScale(canvas);
         var avaliable_width = canvas.width - (2 * canvas_padding);
         var avaliable_height = canvas.height - (2 * canvas_padding);
+        var scale = calculateScale(canvas);
         var calculated_sheet_width = $scope._sheet_width * scale;
         var calculated_sheet_height = $scope._sheet_height * scale;
-
-        var calculated_overlap = $scope._options_horizontal_overlap * scale;
-
         var left_sheet_offset = canvas_padding + ((avaliable_width - calculated_sheet_width) / 2);
         var top_sheet_offset = canvas_padding + ((avaliable_height - calculated_sheet_height) / 2);
-
-        // drawing the sheet
+        // drawing the mat board itself
         ctx.rect(left_sheet_offset, top_sheet_offset, calculated_sheet_width, calculated_sheet_height);
         ctx.lineWidth=3;
         ctx.strokeStyle="Black";
         ctx.stroke();
         ctx.fillStyle="LightGoldenRodYellow";
-        ctx.fill();
+        ctx.fill(); 
+
+        if (canvas_id == "front_canvas") {
+            //now put a picture in
+            var cxt = canvas.getContext("2d");
+            // http://placekitten.com/g/200/300
+            var calculated_image_width = $scope._image_width * scale;
+            var calculated_image_height = $scope._image_height * scale;
+            var left_image_offset = canvas_padding + ((avaliable_width  - calculated_image_width) / 2);
+            var top_image_offset = canvas_padding + ((avaliable_height - calculated_image_height) / 2);
+
+            top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
+            var img=new Image();
+            img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
+            img.onload = function(ctx){
+                cxt.drawImage(img, left_image_offset, top_image_offset,
+                    calculated_image_width, calculated_image_height);
+            };
+            // TODO: need to mark where the gradient is
+            /*ctx.lineWidth = calculated_overlap;
+            ctx.strokeStyle = "OrangeRed";
+            ctx.strokeRect(left_image_offset - calculated_overlap, 
+                top_image_offset - calculated_overlap,
+                calculated_image_width + (calculated_overlap * 2),
+                calculated_image_height + (calculated_overlap * 2));*/
+
+        }
+
+        /*
+
+        $scope._window_left_offset = ($scope._sheet_width - $scope._image_width) / 2;  //internally using mm
+        $scope._window_top_offset = ($scope._sheet_height - $scope._image_height) / 2;  //internally using mm
+        $scope._window_bottom_offset = $scope._window_top_offset;
+        $scope._window_top_offset = $scope._window_top_offset - $scope._options_bottom_weight;
+        $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
+
+        ['_window_left_offset', '_window_top_offset', '_window_bottom_offset'].map( function(item) {
+            $scope[item] = $scope[item] + $scope._options_overlap;
+        })
+        // Print - for back
+        $scope._print_left_offset = ($scope._sheet_width - $scope._print_width) / 2;  //internally using mm
+        $scope._print_top_offset = ($scope._sheet_height - $scope._print_height) / 2;  //internally using mm
+        $scope._print_bottom_offset = $scope._print_top_offset + $scope._options_bottom_weight;
+        $scope._print_top_offset = $scope._print_top_offset - $scope._options_bottom_weight;
+
+
+
+
+
+
+        var calculated_overlap = $scope._options_horizontal_overlap * scale;
+
+
 
         //calculate the position of the image or hole
         var calculated_image_width = $scope._image_width * scale;
@@ -151,23 +203,28 @@ angular.module('myApp.controllers', [])
                 top_image_offset,
                 calculated_image_width,
                 calculated_image_height);
-        }
+        }*/
     }
 
     function calculateDistances() {
-        // Bevel - front
+        // Window - for front mat
         $scope._window_left_offset = ($scope._sheet_width - $scope._image_width) / 2;  //internally using mm
         $scope._window_top_offset = ($scope._sheet_height - $scope._image_height) / 2;  //internally using mm
         $scope._window_bottom_offset = $scope._window_top_offset;
         $scope._window_top_offset = $scope._window_top_offset - $scope._options_bottom_weight;
         $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
-        // Window - back
-        $scope._bevel_left_offset = $scope._window_left_offset - $scope._options_horizontal_overlap;  //internally using mm
-        $scope._bevel_top_offset = $scope._window_top_offset  - $scope._options_horizontal_overlap;  //internally using mm
-        $scope._bevel_bottom_offset = $scope._window_bottom_offset  + $scope._options_horizontal_overlap;  //internally using mm
+
+        ['_window_left_offset', '_window_top_offset', '_window_bottom_offset'].map( function(item) {
+            $scope[item] = $scope[item] + $scope._options_overlap;
+        })
+        // Print - for back
+        $scope._print_left_offset = ($scope._sheet_width - $scope._print_width) / 2;  //internally using mm
+        $scope._print_top_offset = ($scope._sheet_height - $scope._print_height) / 2;  //internally using mm
+        $scope._print_bottom_offset = $scope._print_top_offset + $scope._options_bottom_weight;
+        $scope._print_top_offset = $scope._print_top_offset - $scope._options_bottom_weight;
 
         //now convert to human friendly and selected format
-        var fields = ['window_left_offset', 'window_top_offset', 'window_bottom_offset', 'bevel_left_offset', 'bevel_top_offset', 'bevel_bottom_offset'];
+        var fields = ['window_left_offset', 'window_top_offset', 'window_bottom_offset', 'print_left_offset', 'print_top_offset', 'print_bottom_offset'];
         fields.map( function(item) {
             var decimal_places = 0; // default for mm
             switch ($scope.options_units) {
@@ -194,6 +251,7 @@ angular.module('myApp.controllers', [])
         }
         //$log.debug($scope.myForm);
         normaliseFigures();
+        calculateDistances();
 
         if ($scope.canvasSupported) {
             // make our canvasses as wide as they can be
@@ -206,7 +264,6 @@ angular.module('myApp.controllers', [])
                 drawSheetAndImage(canvas, canvas_id);
             });
         }
-        calculateDistances();
     }
 
     //initalise the form

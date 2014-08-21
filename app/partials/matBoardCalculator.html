@@ -6,72 +6,93 @@
                 <div class="col-md-4" class="form-group">
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
-                        <label for="sheet_width">Width:</label>
-                        <input id="sheet_width" type="number" step="any" ng-model="sheet_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="sheet_height">Height:</label>
-                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                         <label for="sheet_units" ng-model="sheet_units">Units:</label>
                         <select id="sheet_units" ng-model="sheet_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
                         </select>
+                        <br/>
+                        <label for="sheet_width">Width:</label>
+                        <input id="sheet_width" type="number" step="any" ng-model="sheet_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="sheet_height">Height:</label>
+                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     <br/>
                     <fieldset>
+                        <legend>Print Dimensions</legend>
+                        <label for="print_units">Units:</label>
+                        <select id="print_units" ng-model="print_units" ng-blur="updateCanvas()">
+                          <option value="mm">mm</option>
+                          <option value="cm">cm</option>
+                          <option value="inches">inches</option>
+                        </select>
+                        </br>
+                        <label for="print_width">Width:</label>
+                        <input id="print_width" type="number" step="any"  ng-model="print_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="print_height">Height:</label>
+                        <input id="print_height" type="number" step="any" ng-model="print_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                    </fieldset>
+                    </br>                    
+                    <fieldset>
                         <legend>Image Dimensions</legend>
-                        <label for="image_width">Width:</label>
-                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="image_height">Height:</label>
-                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                         <label for="image_units">Units:</label>
                         <select id="image_units" ng-model="image_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
                         </select>
-
+                        </br>
+                        <label for="image_width">Width:</label>
+                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="image_height">Height:</label>
+                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     <br/>
-                    <fieldset>
-                        <legend>Options</legend>
-                        <label for="options_horizontal_overlap">Bevel horizontal distance:</label>
-                        <input id="options_horizontal_overlap" type="number" step="any" ng-model="options_horizontal_overlap" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="options_bottom_weight">Bottom weight:</label>
-                        <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="options_units">Units:</label>
-                        <select id="options_units" ng-model="options_units" ng-blur="updateCanvas()">
-                          <option value="mm">mm</option>
-                          <option value="cm">cm</option>
-                          <option value="inches">inches</option>
-                        </select>
-                    </fieldset>
-                </form>
             </div>
             <div class="col-md-4" class="form-group" id="calulationsDiv">
-                <legend>Calculations - Front</legend>
-                Bevel distance from sides of mat: {{bevel_left_offset}} {{options_units}}
-                <br/>
-                Bevel distance from top of mat: {{bevel_top_offset}} {{options_units}}
-                <br/>
-                Bevel distance from bottom of mat: {{bevel_bottom_offset}} {{options_units}}
-                <br/>
-                <br/>
-                <legend>Calculations - Back</legend>
-                Window distance from sides of mat: {{window_left_offset}} {{options_units}}
-                <br/>
-                Window distance from top of mat: {{window_top_offset}} {{options_units}}
-                <br/>
-                Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
-                <br/>
+                <fieldset>
+                    <legend>Options</legend>
+                    <label for="options_units">Units:</label>
+                    <select id="options_units" ng-model="options_units" ng-blur="updateCanvas()">
+                      <option value="mm">mm</option>
+                      <option value="cm">cm</option>
+                      <option value="inches">inches</option>
+                    </select>
+                    <br/>
+                    <label for="options_overlap">Image/Mat overlap:</label>
+                    <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="updateCanvas()" required></input>
+                    <label for="options_bottom_weight">Bottom weight:</label>
+                    <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                </fieldset>
+                </form>
+                <fieldset>
+                    <legend>Calculations - Front Mat</legend>
+                    Window distance from sides of mat: {{window_left_offset}} {{options_units}}
+                    <br/>
+                    Window distance from top of mat: {{window_top_offset}} {{options_units}}
+                    <br/>
+                    Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
+                    <br/>
+                </fieldset>
+                <fieldset>
+                    <legend>Calculations - Back Mat</legend>
+                    Print distance from sides of back mat: {{print_left_offset}} {{options_units}}
+                    <br/>
+                    Print distance from top of back mat: {{print_top_offset}} {{options_units}}
+                    <br/>
+                    Print distance from bottom of back mat: {{print_bottom_offset}} {{options_units}}
+                    <br/>
+                    <br/>
+                </fieldset>
                 <button id="update" ng-click="updateCanvas()">Update</button>
             </div>
             <div class="col-md-4" class="form-group" id="previewDiv" ng-show="canvasSupported">
                 <br/>
-                <legend>Front Preview</legend>
+                <legend>Front Mat Preview</legend>
                 <canvas id="front_canvas" height="300px"></canvas>
                 <br/>
-                <legend>Back Preview</legend>
+                <legend>Back Mat Preview</legend>
                 <canvas id="back_canvas" height="300px"></canvas>
             </div>
             <div class="col-md-4" class="form-group" id="sadDiv" ng-hide="canvasSupported">
