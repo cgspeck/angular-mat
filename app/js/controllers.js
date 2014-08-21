@@ -234,6 +234,3 @@ angular.module('myApp.controllers', [])
     $scope.updateCanvas();
 
   }])
-  .controller('MyCtrl2', ['$scope', function($scope) {
-
-  }]);
