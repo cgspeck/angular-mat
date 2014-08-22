@@ -20,21 +20,6 @@
                     </fieldset>
                     <br/>
                     <fieldset>
-                        <legend>Page Dimensions</legend>
-                        <label for="page_units">Units:</label>
-                        <select id="page_units" ng-model="page_units" ng-change="updateCanvas()">
-                          <option value="mm">mm</option>
-                          <option value="cm">cm</option>
-                          <option value="inches">inches</option>
-                        </select>
-                        </br>
-                        <label for="page_width">Width:</label>
-                        <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="page_height">Height:</label>
-                        <input id="page_height" type="number" step="any" ng-model="page_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
-                    </fieldset>
-                    </br>                    
-                    <fieldset>
                         <legend>Image Dimensions</legend>
                         <label for="image_units">Units:</label>
                         <select id="image_units" ng-model="image_units" ng-change="updateCanvas()">
@@ -49,6 +34,21 @@
                         <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     <br/>
+                    <fieldset>
+                        <legend>Page Dimensions</legend>
+                        <label for="page_units">Units:</label>
+                        <select id="page_units" ng-model="page_units" ng-change="updateCanvas()">
+                          <option value="mm">mm</option>
+                          <option value="cm">cm</option>
+                          <option value="inches">inches</option>
+                        </select>
+                        </br>
+                        <label for="page_width">Width:</label>
+                        <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="page_height">Height:</label>
+                        <input id="page_height" type="number" step="any" ng-model="page_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                    </fieldset>
+                    </br>                    
             </div>
             <div class="col-md-4" class="form-group" id="calulationsDiv">
                 <fieldset>
