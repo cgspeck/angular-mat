@@ -66,9 +66,10 @@
                     <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                 </fieldset>
                 </form>
-                    <h3>Calculations</h3>
-                <div class="well" ng-hide="sizeErrors">
-                    All the following are in units of {{options_units}}.
+                <div ng-hide="sizeErrors">
+                <h3>Calculations</h3>
+                    <div class="well">
+                        All the following are in units of {{options_units}}.
                         <h4>Print Margins</h4>
                         Top: {{image_top_margin}}
                         <br/>
@@ -89,9 +90,13 @@
                         Print distance from bottom of back mat: {{page_bottom_offset}}
                         <br/>
                         <br/>
+                    </div>
                 </div>
-                <div class="well" ng-show="sizeErrors">
-                    {{sizeErrorString}}
+                <div ng-show="sizeErrors">
+                    <h3>Validation Errors</h3>
+                    <div class="well">
+                        {{sizeErrorString}}
+                    </div>
                 </div>
 
             </div>
