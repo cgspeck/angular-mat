@@ -146,12 +146,29 @@ angular.module('myApp.controllers', [])
         img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset);
+            if (canvas_id == "front_canvas") {
+                ctx.fillStyle = "LightGoldenRodYellow";
+                // left panel
+                var calculated_panel_width = $scope._window_left_offset * scale;
+                ctx.fillRect(left_sheet_offset, top_sheet_offset,
+                    calculated_panel_width, calculated_sheet_height);
+                // right panel
+                var right_panel_offset = (calculated_sheet_width + left_sheet_offset) - calculated_panel_width;
+                // /ctx.fillStyle = "LightGoldenRodYellow";
+                ctx.fillRect(right_panel_offset, top_sheet_offset,
+                    calculated_panel_width, calculated_sheet_height);
+                // top
+                var calculated_top_panel_height = $scope._window_top_offset * scale;
+                ctx.fillRect(left_sheet_offset, top_sheet_offset,
+                    calculated_sheet_width, calculated_top_panel_height);
+                //bottom
+                var calculated_bottom_panel_height = $scope._window_bottom_offset * scale;
+                var calculated_bottom_panel_offset = (top_sheet_offset + calculated_sheet_height) - calculated_bottom_panel_height;
+                ctx.fillRect(left_sheet_offset, calculated_bottom_panel_offset,
+                    calculated_sheet_width, calculated_bottom_panel_height);
+            }
         };
         
-        if (canvas_id == "front_canvas") {
-            // TODO: now put the top mat on
-        }
-        return;
 
     }
 
