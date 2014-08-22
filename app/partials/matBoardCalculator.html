@@ -20,18 +20,18 @@
                     </fieldset>
                     <br/>
                     <fieldset>
-                        <legend>Print Dimensions</legend>
-                        <label for="print_units">Units:</label>
-                        <select id="print_units" ng-model="print_units" ng-blur="updateCanvas()">
+                        <legend>Page Dimensions</legend>
+                        <label for="page_units">Units:</label>
+                        <select id="page_units" ng-model="page_units" ng-blur="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
                         </select>
                         </br>
-                        <label for="print_width">Width:</label>
-                        <input id="print_width" type="number" step="any"  ng-model="print_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="print_height">Height:</label>
-                        <input id="print_height" type="number" step="any" ng-model="print_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="page_width">Width:</label>
+                        <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="page_height">Height:</label>
+                        <input id="page_height" type="number" step="any" ng-model="page_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     </br>                    
                     <fieldset>
@@ -67,21 +67,28 @@
                 </fieldset>
                 </form>
                 <fieldset>
-                    <legend>Calculations - Front Mat</legend>
-                    Window distance from sides of mat: {{window_left_offset}} {{options_units}}
+                    <legend>Calculations - Print Margins</legend>
+                    Top: {{image_top_margin}} {{options_units}}
                     <br/>
+                    Left: {{image_left_margin}} {{options_units}}
+                    <br/>
+                </fieldset>
+                <fieldset>
+                    <legend>Calculations - Front Mat</legend>
                     Window distance from top of mat: {{window_top_offset}} {{options_units}}
+                    <br/>
+                    Window distance from sides of mat: {{window_left_offset}} {{options_units}}
                     <br/>
                     Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
                     <br/>
                 </fieldset>
                 <fieldset>
                     <legend>Calculations - Back Mat</legend>
-                    Print distance from sides of back mat: {{print_left_offset}} {{options_units}}
+                    Print distance from top of back mat: {{page_top_offset}} {{options_units}}
                     <br/>
-                    Print distance from top of back mat: {{print_top_offset}} {{options_units}}
+                    Print distance from sides of back mat: {{page_left_offset}} {{options_units}}
                     <br/>
-                    Print distance from bottom of back mat: {{print_bottom_offset}} {{options_units}}
+                    Print distance from bottom of back mat: {{page_bottom_offset}} {{options_units}}
                     <br/>
                     <br/>
                 </fieldset>
