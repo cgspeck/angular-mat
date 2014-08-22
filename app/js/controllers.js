@@ -1,3 +1,4 @@
+/*globals window, Image, document*/
 'use strict';
 
 /* Controllers */
@@ -92,10 +93,6 @@ angular.module('myApp.controllers', [])
         ctx.clearRect(0,0,canvas.width,canvas.height);
     }
 
-    function draw(ctx){
-        cxt.drawImage(img, left_image_offset, top_image_offset);
-    }
-
     function drawSheetAndImage(canvas, canvas_id) {
         //
         if (!(canvas_id == "front_canvas" || canvas_id == "back_canvas")) {
@@ -128,12 +125,12 @@ angular.module('myApp.controllers', [])
         $log.debug($scope._page_left_offset);
         $log.debug(left_sheet_offset);
         var calculated_page_top_offset = top_sheet_offset + ($scope._page_top_offset * scale);
-        // var ctx = canvas.getContext("2d");
+
         ctx.fillStyle="White";
         ctx.fillRect(calculated_page_left_offset, calculated_page_top_offset,
             calculated_page_width, calculated_page_height);
         $log.debug(calculated_page_left_offset);
-        //$log.debug(calculated_page_left_offset + " " + calculated_page_top_offset + calculated_page_width + " " calculated_page_height);
+
         // now draw the image
         var calculated_image_width = $scope._image_width * scale;
         var calculated_image_height = $scope._image_height * scale;
@@ -148,55 +145,12 @@ angular.module('myApp.controllers', [])
         img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset);
-        }
+        };
         
-        return;
         if (canvas_id == "front_canvas") {
-            //now put a picture in
-            var cxt = canvas.getContext("2d");
-            // http://placekitten.com/g/200/300
-            var calculated_image_width = $scope._image_width * scale;
-            var calculated_image_height = $scope._image_height * scale;
-            var sy = $scope._options_overlap * scale;
-            var sx = sy;
-            var swidth = calculated_image_width - (sy * 2);
-            var sheight = calculated_image_height - (sx * 2);
-
-            var left_image_offset = canvas_padding + ((avaliable_width  - calculated_image_width) / 2);
-            left_image_offset = left_image_offset + ($scope._options_overlap * scale);
-            var top_image_offset = canvas_padding + ((avaliable_height - calculated_image_height) / 2);
-            top_image_offset = top_image_offset + ($scope._options_overlap * scale);
-
-            top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
-
-            calculated_image_width = calculated_image_width - ($scope._options_overlap * scale);
-            calculated_image_height = calculated_image_height - ($scope._options_overlap * scale);
-
-            var img=new Image();
-            img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
-            img.onload = function(ctx){
-                cxt.drawImage(img, sx, sy, swidth, sheight, left_image_offset, top_image_offset,
-                    calculated_image_width, calculated_image_height);
-            };
-        } else {
-            //draw the printed page first
-            var cxt = canvas.getContext("2d");
-
-            //now the obligatory cat picture
-            var calculated_image_width = $scope._image_width * scale;
-            var calculated_image_height = $scope._image_height * scale;
-            var left_image_offset = canvas_padding + ((avaliable_width  - calculated_image_width) / 2);
-            var top_image_offset = canvas_padding + ((avaliable_height - calculated_image_height) / 2);
-
-            top_image_offset = top_image_offset - ($scope._options_bottom_weight * scale);
-
-            var img=new Image();
-            img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
-            img.onload = function(ctx){
-                cxt.drawImage(img, left_image_offset, top_image_offset,
-                    calculated_image_width, calculated_image_height);
-            };            
+            // TODO: now put the top mat on
         }
+        return;
 
     }
 
@@ -210,7 +164,7 @@ angular.module('myApp.controllers', [])
 
         ['_window_left_offset', '_window_top_offset', '_window_bottom_offset'].map( function(item) {
             $scope[item] = $scope[item] + $scope._options_overlap; // adjust for overlap
-        })
+        });
         // Print - for back
         $scope._page_left_offset = ($scope._sheet_width - $scope._page_width) / 2;  //internally using mm
         $scope._page_top_offset = ($scope._sheet_height - $scope._page_height) / 2;  //internally using mm
@@ -226,45 +180,41 @@ angular.module('myApp.controllers', [])
             'page_bottom_offset', 'image_left_margin', 'image_top_margin'];
         fields.map( function(item) {
             $scope[item] = $filter('number')(convert_unit($scope['_' + item], "mm", $scope.options_units), decimal_places($scope.options_units));
-        })
+        });
     }
 
     function decimal_places(units){
         switch (units) {
             case "mm":
                 return 0;
-                break;     
             case "cm":
                 return 2;
-                break;
             case "inches":
                 return 2;
-                break;
         }
     }
 
     function calculatePrintMargins(center_image) {
         /* Sets centre margins for image on printed page */
+        var fields = ['image_left_margin', 'image_top_margin'];
         if (center_image) {
             // calculate values and send to form
             $scope._image_left_margin = ($scope._page_width - $scope._image_width) / 2;
             $scope._image_top_margin = ($scope._page_height - $scope._image_height) / 2;
             // now convert them to UI units
-            var fields = ['image_left_margin', 'image_top_margin'];
             fields.map( function(item) {
                 $scope[item] = $filter('number')(convert_unit($scope['_' + item], "mm", $scope.options_units), decimal_places($scope.options_units));
                 $log.debug(item);
                 $log.debug($scope[item]);
-            })
+            });
         } else {
             // read values off form and convert to private _ values
-            var fields = ['image_left_margin', 'image_top_margin'];
             fields.map( function(item) {
                 $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
                 $log.debug(item);
                 $log.debug($scope[item]);
 
-            })
+            });
         }
     }
 
@@ -298,9 +248,9 @@ angular.module('myApp.controllers', [])
                 drawSheetAndImage(canvas, canvas_id);
             });
         }
-    }
+    };
 
     //initalise the form
     $scope.updateCanvas();
 
-  }])
+  }]);
