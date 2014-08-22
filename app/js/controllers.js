@@ -20,6 +20,7 @@ angular.module('myApp.controllers', [])
     $scope.options_units = "mm";
     $scope.image_units = "mm";
     $scope.sheet_units = "mm";
+    $scope.page_units = "mm";
 
     $scope.center_image = true;
 

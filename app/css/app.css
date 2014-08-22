@@ -28,3 +28,7 @@
   content: "";
   padding: 0;
 }
+
+.form-control.ng-invalid {
+  border-color: red;
+}
