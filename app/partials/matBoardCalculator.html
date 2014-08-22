@@ -67,7 +67,7 @@
                 </fieldset>
                 </form>
                     <h3>Calculations</h3>
-                <div class="well">
+                <div class="well" ng-hide="sizeErrors">
                     All the following are in units of {{options_units}}.
                         <h4>Print Margins</h4>
                         Top: {{image_top_margin}}
@@ -90,6 +90,10 @@
                         <br/>
                         <br/>
                 </div>
+                <div class="well" ng-show="sizeErrors">
+                    {{sizeErrorString}}
+                </div>
+
             </div>
             <div class="col-md-4" class="form-group" id="previewDiv" ng-show="canvasSupported">
                 <h3>Front Mat Preview</h3>

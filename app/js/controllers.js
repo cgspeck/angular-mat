@@ -22,6 +22,9 @@ angular.module('myApp.controllers', [])
     $scope.sheet_units = "cm";
     $scope.page_units = "cm";
 
+    $scope.sizeErrors = false;
+    $scope.sizeErrorString = "";
+
     $scope.canvasSupported = !!window.HTMLCanvasElement;
     
     var canvas_colour = "LightGray";
@@ -210,6 +213,56 @@ angular.module('myApp.controllers', [])
         }
     }
 
+    function do_size_validations() {
+        var ok = true;
+        var msg = "";
+
+        function lnbrk(msg) {
+            return (msg.length == 0) ? "" : msg + "\n";
+        }
+
+        angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
+        angular.element(document.getElementById("image_height")).removeClass("ng-invalid");
+        angular.element(document.getElementById("sheet_height")).removeClass("ng-invalid");
+        angular.element(document.getElementById("image_width")).removeClass("ng-invalid");
+        angular.element(document.getElementById("page_width")).removeClass("ng-invalid");
+        angular.element(document.getElementById("sheet_width")).removeClass("ng-invalid");
+
+        if ($scope._image_height > $scope._page_height) {
+            ok = false;
+            msg = "Image height must be less than page height.";
+            document.getElementById("page_height").className += " ng-invalid";
+            document.getElementById("image_height").className += " ng-invalid";
+        }
+
+        if ($scope._page_height > $scope._sheet_height) {
+            ok = false;
+            msg = lnbrk(msg) + "Page height must be less than mat height.";
+            document.getElementById("page_height").className += " ng-invalid";
+            document.getElementById("sheet_height").className += " ng-invalid";
+        }
+
+        if ($scope._image_width > $scope._page_width) {
+            ok = false;
+            msg = "Image width must be less than page width.";
+            angular.element(document.getElementById("image_width")).addClass("ng-invalid");
+            angular.element(document.getElementById("page_width")).addClass("ng-invalid");
+        }
+
+        if ($scope._page_width > $scope._sheet_width) {
+            ok = false;
+            msg = lnbrk(msg) + "Page width must be less than mat width.";
+            angular.element(document.getElementById("sheet_width")).addClass("ng-invalid");
+            angular.element(document.getElementById("page_width")).addClass("ng-invalid");
+        }
+
+        return {
+            valid: ok,
+            message: msg
+        };
+    }
+
+
     $scope.updateCanvas = function() {
         // check if the form exists and break if invalid
         // form will not be defined the first time the screen loads
@@ -217,12 +270,26 @@ angular.module('myApp.controllers', [])
             if ($scope.myForm.$invalid) {
                 // TODO: display validation errors?
                 $log.debug('validation errors');
+                $scope.sizeErrors = true;
+                $scope.sizeErrorString = "One or more fields empty or invalid.";
                 return;
             }
 
         }
         //$log.debug($scope.myForm);
         normaliseFigures();
+
+        var size_validation = do_size_validations();
+        $log.debug(size_validation);
+        $log.debug(size_validation.valid);
+
+        if (!size_validation.valid) {
+            $scope.sizeErrors = true;
+            $scope.sizeErrorString = size_validation.message;
+            return;
+        }
+
+        $scope.sizeErrors = false;
         
         calculateDistances();
 

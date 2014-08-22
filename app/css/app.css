@@ -31,4 +31,5 @@
 
 .form-control.ng-invalid {
   border-color: red;
+  background-color: pink;
 }
