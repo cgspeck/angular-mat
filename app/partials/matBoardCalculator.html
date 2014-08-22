@@ -66,39 +66,35 @@
                     <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                 </fieldset>
                 </form>
-                <fieldset>
-                    <legend>Calculations - Print Margins</legend>
-                    Top: {{image_top_margin}} {{options_units}}
-                    <br/>
-                    Left: {{image_left_margin}} {{options_units}}
-                    <br/>
-                </fieldset>
-                <fieldset>
-                    <legend>Calculations - Front Mat</legend>
-                    Window distance from top of mat: {{window_top_offset}} {{options_units}}
-                    <br/>
-                    Window distance from sides of mat: {{window_left_offset}} {{options_units}}
-                    <br/>
-                    Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
-                    <br/>
-                </fieldset>
-                <fieldset>
-                    <legend>Calculations - Back Mat</legend>
-                    Print distance from top of back mat: {{page_top_offset}} {{options_units}}
-                    <br/>
-                    Print distance from sides of back mat: {{page_left_offset}} {{options_units}}
-                    <br/>
-                    Print distance from bottom of back mat: {{page_bottom_offset}} {{options_units}}
-                    <br/>
-                    <br/>
-                </fieldset>
+                    <h3>Calculations</h3>
+                <div class="well">
+                        <h4>Print Margins</h4>
+                        Top: {{image_top_margin}} {{options_units}}
+                        <br/>
+                        Left: {{image_left_margin}} {{options_units}}
+                        <br/>
+                        <h4>Front Mat</h4>
+                        Window distance from top of mat: {{window_top_offset}} {{options_units}}
+                        <br/>
+                        Window distance from sides of mat: {{window_left_offset}} {{options_units}}
+                        <br/>
+                        Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
+                        <br/>
+                        <h4>Back Mat</h4>
+                        Print distance from top of back mat: {{page_top_offset}} {{options_units}}
+                        <br/>
+                        Print distance from sides of back mat: {{page_left_offset}} {{options_units}}
+                        <br/>
+                        Print distance from bottom of back mat: {{page_bottom_offset}} {{options_units}}
+                        <br/>
+                        <br/>
+                </div>
             </div>
             <div class="col-md-4" class="form-group" id="previewDiv" ng-show="canvasSupported">
-                <br/>
-                <legend>Front Mat Preview</legend>
+                <h3>Front Mat Preview</h3>
                 <canvas id="front_canvas" height="300px"></canvas>
                 <br/>
-                <legend>Back Mat Preview</legend>
+                <h3>Back Mat Preview</h3>
                 <canvas id="back_canvas" height="300px"></canvas>
             </div>
             <div class="col-md-4" class="form-group" id="sadDiv" ng-hide="canvasSupported">
