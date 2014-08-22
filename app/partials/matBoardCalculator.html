@@ -7,7 +7,7 @@
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
                         <label for="sheet_units" ng-model="sheet_units">Units:</label>
-                        <select id="sheet_units" ng-model="sheet_units" ng-blur="updateCanvas()">
+                        <select id="sheet_units" ng-model="sheet_units" ng-change="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -22,7 +22,7 @@
                     <fieldset>
                         <legend>Page Dimensions</legend>
                         <label for="page_units">Units:</label>
-                        <select id="page_units" ng-model="page_units" ng-blur="updateCanvas()">
+                        <select id="page_units" ng-model="page_units" ng-change="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -37,7 +37,7 @@
                     <fieldset>
                         <legend>Image Dimensions</legend>
                         <label for="image_units">Units:</label>
-                        <select id="image_units" ng-model="image_units" ng-blur="updateCanvas()">
+                        <select id="image_units" ng-model="image_units" ng-change="updateCanvas()">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -53,8 +53,8 @@
             <div class="col-md-4" class="form-group" id="calulationsDiv">
                 <fieldset>
                     <legend>Options</legend>
-                    <label for="options_units">Units:</label>
-                    <select id="options_units" ng-model="options_units" ng-blur="updateCanvas()">
+                    <label for="options_units">Units for options & results :</label>
+                    <select id="options_units" ng-model="options_units" ng-change="updateCanvas()">
                       <option value="mm">mm</option>
                       <option value="cm">cm</option>
                       <option value="inches">inches</option>
@@ -68,24 +68,25 @@
                 </form>
                     <h3>Calculations</h3>
                 <div class="well">
+                    All the following are in units of {{options_units}}.
                         <h4>Print Margins</h4>
-                        Top: {{image_top_margin}} {{options_units}}
+                        Top: {{image_top_margin}}
                         <br/>
-                        Left: {{image_left_margin}} {{options_units}}
+                        Left: {{image_left_margin}}
                         <br/>
                         <h4>Front Mat</h4>
-                        Window distance from top of mat: {{window_top_offset}} {{options_units}}
+                        Window distance from top of mat: {{window_top_offset}}
                         <br/>
-                        Window distance from sides of mat: {{window_left_offset}} {{options_units}}
+                        Window distance from sides of mat: {{window_left_offset}}
                         <br/>
-                        Window distance from bottom of mat: {{window_bottom_offset}} {{options_units}}
+                        Window distance from bottom of mat: {{window_bottom_offset}}
                         <br/>
                         <h4>Back Mat</h4>
-                        Print distance from top of back mat: {{page_top_offset}} {{options_units}}
+                        Print distance from top of back mat: {{page_top_offset}}
                         <br/>
-                        Print distance from sides of back mat: {{page_left_offset}} {{options_units}}
+                        Print distance from sides of back mat: {{page_left_offset}}
                         <br/>
-                        Print distance from bottom of back mat: {{page_bottom_offset}} {{options_units}}
+                        Print distance from bottom of back mat: {{page_bottom_offset}}
                         <br/>
                         <br/>
                 </div>

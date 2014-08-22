@@ -6,21 +6,21 @@
 angular.module('myApp.controllers', [])
   .controller('matBoardCalculator', ['$scope', '$log', '$filter',
     function($scope, $log, $filter) {
-    $scope.sheet_width = 400; // internally store values as metric mm
-    $scope.sheet_height = 400; // internally store values as metric mm
-    $scope.page_width = 300;
-    $scope.page_height = 300;
-    $scope.image_width = 200;
-    $scope.image_height = 200;
-    $scope.image_left_margin = 0;
-    $scope.image_top_margin = 0;
-    $scope.options_overlap = 3; // mm
-    $scope.options_bottom_weight = 25;
+    $scope.sheet_width = 40; // internally store values as metric mm
+    $scope.sheet_height = 40; // internally store values as metric mm
+    $scope.page_width = 29.7;
+    $scope.page_height = 21;
+    $scope.image_width = 20;
+    $scope.image_height = 20;
+    //$scope.image_left_margin = 0;
+    //$scope.image_top_margin = 0;
+    $scope.options_overlap = 0.3; // mm
+    $scope.options_bottom_weight = 2.5;
 
-    $scope.options_units = "mm";
-    $scope.image_units = "mm";
-    $scope.sheet_units = "mm";
-    $scope.page_units = "mm";
+    $scope.options_units = "cm";
+    $scope.image_units = "cm";
+    $scope.sheet_units = "cm";
+    $scope.page_units = "cm";
 
     $scope.center_image = true;
 
