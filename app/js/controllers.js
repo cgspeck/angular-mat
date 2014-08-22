@@ -22,8 +22,6 @@ angular.module('myApp.controllers', [])
     $scope.sheet_units = "cm";
     $scope.page_units = "cm";
 
-    $scope.center_image = true;
-
     $scope.canvasSupported = !!window.HTMLCanvasElement;
     
     var canvas_colour = "LightGray";
@@ -212,30 +210,6 @@ angular.module('myApp.controllers', [])
         }
     }
 
-    function calculatePrintMargins(center_image) {
-        /* Sets centre margins for image on printed page */
-        var fields = ['image_left_margin', 'image_top_margin'];
-        if (center_image) {
-            // calculate values and send to form
-            $scope._image_left_margin = ($scope._page_width - $scope._image_width) / 2;
-            $scope._image_top_margin = ($scope._page_height - $scope._image_height) / 2;
-            // now convert them to UI units
-            fields.map( function(item) {
-                $scope[item] = $filter('number')(convert_unit($scope['_' + item], "mm", $scope.options_units), decimal_places($scope.options_units));
-                $log.debug(item);
-                $log.debug($scope[item]);
-            });
-        } else {
-            // read values off form and convert to private _ values
-            fields.map( function(item) {
-                $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
-                $log.debug(item);
-                $log.debug($scope[item]);
-
-            });
-        }
-    }
-
     $scope.updateCanvas = function() {
         // check if the form exists and break if invalid
         // form will not be defined the first time the screen loads
@@ -249,9 +223,6 @@ angular.module('myApp.controllers', [])
         }
         //$log.debug($scope.myForm);
         normaliseFigures();
-
-        
-        //calculatePrintMargins($scope.center_image);
         
         calculateDistances();
 
