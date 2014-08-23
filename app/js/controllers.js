@@ -349,7 +349,10 @@ angular.module('myApp.controllers', [])
                     $scope[selector + "_units"]);
                 $scope[selector + "_" + value] = parseFloat(
                     $filter('number')(unrounded_value,
-                        decimal_places($scope[selector + "_units"])));
+                        decimal_places($scope[selector + "_units"])).replace(/,/g, ''));
+                //$scope[selector + "_" + value] = parseFloat(3999.999);
+                //$scope[selector + "_" + value] = $filter('number')(parseFloat(unrounded_value),
+                //        decimal_places($scope[selector + "_units"])));
             });
             $scope["_" + selector + "_units"] = $scope[selector + "_units"];
 
