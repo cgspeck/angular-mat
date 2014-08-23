@@ -137,8 +137,14 @@ angular.module('myApp.controllers', [])
         var calculated_page_width = $scope._page_width * scale;
         var calculated_page_height = $scope._page_height * scale;
         var calculated_page_left_offset = left_sheet_offset + ($scope._page_left_offset * scale);
-
         var calculated_page_top_offset = top_sheet_offset + ($scope._page_top_offset * scale);
+
+        if (calculated_page_width < 1) {
+            calculated_page_width = 1;
+        }
+        if (calculated_page_height < 1) {
+            calculated_page_height = 1;
+        }
 
         ctx.fillStyle="White";
         ctx.fillRect(calculated_page_left_offset, calculated_page_top_offset,
@@ -147,6 +153,14 @@ angular.module('myApp.controllers', [])
         // now draw the image
         var calculated_image_width = $scope._image_width * scale;
         var calculated_image_height = $scope._image_height * scale;
+
+        // the context does not honour values less than 1
+        if (calculated_image_width < 1) {
+            calculated_image_width = 1;
+        }
+        if (calculated_image_height < 1) {
+            calculated_image_height = 1;
+        }
 
         var calculated_image_left_offset = calculated_page_left_offset + ($scope._image_left_margin * scale);
         var calculated_image_top_offset = calculated_page_top_offset + ($scope._image_top_margin * scale);
