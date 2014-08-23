@@ -41,6 +41,7 @@ angular.module('myApp.controllers', [])
     
     var canvas_colour = "LightGray";
     var canvas_padding = 10; // px
+    var mat_colour = "DarkKhaki";
 
     function convert_unit(value, from_unit, to_unit) {
         if (from_unit == to_unit) {
@@ -130,7 +131,7 @@ angular.module('myApp.controllers', [])
         ctx.lineWidth=3;
         ctx.strokeStyle="Black";
         ctx.stroke();
-        ctx.fillStyle="LightGoldenRodYellow";
+        ctx.fillStyle=mat_colour;
         ctx.fill(); 
         // now draw the paper sheet
         var calculated_page_width = $scope._page_width * scale;
@@ -157,14 +158,13 @@ angular.module('myApp.controllers', [])
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset);
             if (canvas_id == "front_canvas") {
-                ctx.fillStyle = "LightGoldenRodYellow";
+                ctx.fillStyle = mat_colour;
                 // left panel
                 var calculated_panel_width = $scope._window_left_offset * scale;
                 ctx.fillRect(left_sheet_offset, top_sheet_offset,
                     calculated_panel_width, calculated_sheet_height);
                 // right panel
                 var right_panel_offset = (calculated_sheet_width + left_sheet_offset) - calculated_panel_width;
-                // /ctx.fillStyle = "LightGoldenRodYellow";
                 ctx.fillRect(right_panel_offset, top_sheet_offset,
                     calculated_panel_width, calculated_sheet_height);
                 // top
