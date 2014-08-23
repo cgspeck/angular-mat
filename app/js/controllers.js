@@ -18,9 +18,21 @@ angular.module('myApp.controllers', [])
     $scope.options_bottom_weight = 2.5;
 
     $scope.options_units = "cm";
+    $scope._options_units = "cm";
     $scope.image_units = "cm";
+    $scope._image_units = "cm";
     $scope.sheet_units = "cm";
+    $scope._sheet_units = "cm";
     $scope.page_units = "cm";
+    $scope._page_units = "cm";
+
+    // a dictionary binding unit selector to fields
+    var selector_fields_map = {
+        "options" : ["overlap", "bottom_weight"],
+        "image": ["width", "height"],
+        "sheet": ["width", "height"],
+        "page": ["width", "height"]
+    }
 
     $scope.sizeErrors = false;
     $scope.sizeErrorString = "";
@@ -305,6 +317,34 @@ angular.module('myApp.controllers', [])
             });
         }
     };
+
+    $scope.convertInputs = function(selector) {
+        if (angular.isUndefined($scope[selector + "_units"])) {
+            $log.error("convertInputs: Unrecognised selector:" + selector);
+            return;
+        }
+
+        if ($scope[selector + "_units"] != $scope["_" + selector + "_units"]) {
+            $log.debug(selector_fields_map[selector]);
+            angular.forEach(selector_fields_map[selector], function(value, key) {
+                $log.debug(value);
+                var unrounded_value =  convert_unit(
+                    $scope["_" + selector + "_" + value],
+                    "mm",
+                    $scope[selector + "_units"]);
+                $log.debug(unrounded_value);
+                $log.debug(decimal_places($scope[selector + "_units"]));
+                $log.debug($filter('number')(unrounded_value, decimal_places($scope[selector + "_units"])));
+                $log.debug($scope[selector + "_" + value]);
+                //$scope[selector + "_" + value] = 9000;
+                $scope[selector + "_" + value] = parseFloat(
+                    $filter('number')(unrounded_value,
+                        decimal_places($scope[selector + "_units"])));
+            });
+            updateCanvas();
+            $scope["_" + selector + "_units"] = $scope[selector + "_units"];
+        }
+    }
 
     //initalise the form
     $scope.updateCanvas();

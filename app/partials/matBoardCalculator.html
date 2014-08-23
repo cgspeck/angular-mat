@@ -7,7 +7,7 @@
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
                         <label for="sheet_units" ng-model="sheet_units">Units:</label>
-                        <select id="sheet_units" ng-model="sheet_units" ng-change="updateCanvas()">
+                        <select id="sheet_units" ng-model="sheet_units" ng-change="convertInputs('sheet')">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
