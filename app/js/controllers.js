@@ -168,9 +168,20 @@ angular.module('myApp.controllers', [])
         
         var img=new Image();
 
-        img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
+        var req_img_width = calculated_image_width;
+        var req_img_height = calculated_image_height;
+
+        if (req_img_height < 501) {
+            req_img_height = 501;
+        }
+
+        if (req_img_width < 501) {
+            req_img_width = 501;
+        }
+
+        img.src='http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
         img.onload = function(){
-            ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset);
+            ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
             if (canvas_id == "front_canvas") {
                 ctx.fillStyle = mat_colour;
                 // left panel
