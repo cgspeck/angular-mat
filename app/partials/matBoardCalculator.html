@@ -22,7 +22,7 @@
                     <fieldset>
                         <legend>Image Dimensions</legend>
                         <label for="image_units">Units:</label>
-                        <select id="image_units" ng-model="image_units" ng-change="updateCanvas()">
+                        <select id="image_units" ng-model="image_units" ng-change="convertInputs('image')">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -37,7 +37,7 @@
                     <fieldset>
                         <legend>Page Dimensions</legend>
                         <label for="page_units">Units:</label>
-                        <select id="page_units" ng-model="page_units" ng-change="updateCanvas()">
+                        <select id="page_units" ng-model="page_units" ng-change="convertInputs('page')">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
@@ -54,7 +54,7 @@
                 <fieldset>
                     <legend>Options</legend>
                     <label for="options_units">Units for options & results :</label>
-                    <select id="options_units" ng-model="options_units" ng-change="updateCanvas()">
+                    <select id="options_units" ng-model="options_units" ng-change="convertInputs('options')">
                       <option value="mm">mm</option>
                       <option value="cm">cm</option>
                       <option value="inches">inches</option>

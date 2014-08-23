@@ -136,14 +136,12 @@ angular.module('myApp.controllers', [])
         var calculated_page_width = $scope._page_width * scale;
         var calculated_page_height = $scope._page_height * scale;
         var calculated_page_left_offset = left_sheet_offset + ($scope._page_left_offset * scale);
-        $log.debug($scope._page_left_offset);
-        $log.debug(left_sheet_offset);
+
         var calculated_page_top_offset = top_sheet_offset + ($scope._page_top_offset * scale);
 
         ctx.fillStyle="White";
         ctx.fillRect(calculated_page_left_offset, calculated_page_top_offset,
             calculated_page_width, calculated_page_height);
-        $log.debug(calculated_page_left_offset);
 
         // now draw the image
         var calculated_image_width = $scope._image_width * scale;
@@ -154,8 +152,7 @@ angular.module('myApp.controllers', [])
         
         
         var img=new Image();
-        $log.debug("img:");
-        $log.debug(img);
+
         img.src='http://placekitten.com/' + parseInt(calculated_image_width)  + '/' + parseInt(calculated_image_height);
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset);
@@ -280,20 +277,15 @@ angular.module('myApp.controllers', [])
         // form will not be defined the first time the screen loads
         if (angular.isDefined($scope.myForm)) {
             if ($scope.myForm.$invalid) {
-                // TODO: display validation errors?
-                $log.debug('validation errors');
                 $scope.sizeErrors = true;
                 $scope.sizeErrorString = "One or more fields empty or invalid.";
                 return;
             }
 
         }
-        //$log.debug($scope.myForm);
         normaliseFigures();
 
         var size_validation = do_size_validations();
-        $log.debug(size_validation);
-        $log.debug(size_validation.valid);
 
         if (!size_validation.valid) {
             $scope.sizeErrors = true;
@@ -325,24 +317,20 @@ angular.module('myApp.controllers', [])
         }
 
         if ($scope[selector + "_units"] != $scope["_" + selector + "_units"]) {
-            $log.debug(selector_fields_map[selector]);
             angular.forEach(selector_fields_map[selector], function(value, key) {
-                $log.debug(value);
                 var unrounded_value =  convert_unit(
                     $scope["_" + selector + "_" + value],
                     "mm",
                     $scope[selector + "_units"]);
-                $log.debug(unrounded_value);
-                $log.debug(decimal_places($scope[selector + "_units"]));
-                $log.debug($filter('number')(unrounded_value, decimal_places($scope[selector + "_units"])));
-                $log.debug($scope[selector + "_" + value]);
-                //$scope[selector + "_" + value] = 9000;
                 $scope[selector + "_" + value] = parseFloat(
                     $filter('number')(unrounded_value,
                         decimal_places($scope[selector + "_units"])));
             });
-            updateCanvas();
             $scope["_" + selector + "_units"] = $scope[selector + "_units"];
+
+            if (selector == "options") {
+                $scope.updateCanvas();
+            }
         }
     }
 
