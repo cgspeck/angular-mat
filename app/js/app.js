@@ -4,9 +4,6 @@
 var app = angular.module('myApp', [
   'ui.bootstrap',
   'ngRoute',
-  'myApp.filters',
-  'myApp.services',
-  'myApp.directives',
   'myApp.controllers',
 ])
 
