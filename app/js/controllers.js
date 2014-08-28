@@ -208,7 +208,7 @@ angular.module('myApp.controllers', [])
 
         img.src='http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
         img.onload = function(){
-            //ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
+            ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
             if (canvas_id == "front_canvas") {
                 ctx.fillStyle = mat_colour;
                 // left panel
@@ -228,6 +228,37 @@ angular.module('myApp.controllers', [])
                 var calculated_bottom_panel_offset = (top_mat_offset + calculated_mat_height) - calculated_bottom_panel_height;
                 ctx.fillRect(left_mat_offset, calculated_bottom_panel_offset,
                     calculated_mat_width, calculated_bottom_panel_height);
+
+                if ($scope.options_show_measurements) {
+                    // draw the lines between the mat and the window
+                    drawLineWithAnnotation(ctx,
+                        left_mat_offset,
+                        canvas.height/2,
+                        left_mat_offset + calculated_panel_width,
+                        canvas.height/2,
+                        $scope.window_left_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        right_panel_offset,
+                        canvas.height/2,
+                        right_panel_offset + calculated_panel_width,
+                        canvas.height/2,
+                        $scope.window_left_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        canvas.width/2,
+                        top_mat_offset,
+                        canvas.width/2,
+                        top_mat_offset + calculated_top_panel_height,
+                        $scope.window_top_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        canvas.width/2,
+                        calculated_bottom_panel_offset,
+                        canvas.width/2,
+                        calculated_mat_height + top_mat_offset,
+                        $scope.page_top_offset.toString());
+                }
             }
         };
 
