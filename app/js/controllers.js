@@ -16,6 +16,7 @@ angular.module('myApp.controllers', [])
     //$scope.image_top_margin = 0;
     $scope.options_overlap = 0.3; // mm
     $scope.options_bottom_weight = 2.5;
+    $scope.options_show_measurements = true;
 
     $scope.options_units = "cm";
     $scope._options_units = "cm";
@@ -207,7 +208,7 @@ angular.module('myApp.controllers', [])
 
         img.src='http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
         img.onload = function(){
-            ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
+            //ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
             if (canvas_id == "front_canvas") {
                 ctx.fillStyle = mat_colour;
                 // left panel
@@ -230,22 +231,36 @@ angular.module('myApp.controllers', [])
             }
         };
 
-                // draw the lines between the mat and the sheet
-        drawLineWithAnnotation(ctx,
-            left_mat_offset,
-            canvas.height/2,
-            calculated_page_left_offset,
-            canvas.height/2,
-            $scope._page_left_offset.toString());
+        if ($scope.options_show_measurements && canvas_id == "back_canvas") {
+            // draw the lines between the mat and the sheet
+            drawLineWithAnnotation(ctx,
+                left_mat_offset,
+                canvas.height/2,
+                calculated_page_left_offset,
+                canvas.height/2,
+                $scope.page_left_offset.toString());
 
-        drawLineWithAnnotation(ctx,
-            left_mat_offset + calculated_page_width,
-            canvas.height/2,
-            (left_mat_offset + calculated_page_left_offset + calculated_page_width + left_mat_offset),
-            canvas.height/2,
-            $scope._page_left_offset.toString());
+            drawLineWithAnnotation(ctx,
+                calculated_page_left_offset + calculated_page_width,
+                canvas.height/2,
+                calculated_mat_width + left_mat_offset,
+                canvas.height/2,
+                $scope.page_left_offset.toString());
 
-        
+            drawLineWithAnnotation(ctx,
+                canvas.width/2,
+                top_mat_offset,
+                canvas.width/2,
+                calculated_page_top_offset,
+                $scope.page_top_offset.toString());
+
+            drawLineWithAnnotation(ctx,
+                canvas.width/2,
+                calculated_page_top_offset + calculated_page_height,
+                canvas.width/2,
+                calculated_mat_height + top_mat_offset,
+                $scope.page_top_offset.toString());
+        }
 
     }
 
