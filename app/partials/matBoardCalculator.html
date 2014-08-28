@@ -67,6 +67,7 @@
                     <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="updateCanvas()" required></input>
                     <label for="options_bottom_weight">Bottom weight:</label>
                     <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                    <label for="options_show_measurements">Show measurements: </label><input type="checkbox" ng-model="options_show_measurements" id="options_show_measurements" ng-change="updateCanvas()">
                 </fieldset>
                 </form>
                 <div ng-hide="sizeErrors">

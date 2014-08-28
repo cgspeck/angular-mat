@@ -31,7 +31,7 @@ angular.module('myApp.controllers', [])
     var selector_fields_map = {
         "options" : ["overlap", "bottom_weight"],
         "image": ["width", "height"],
-        "sheet": ["width", "height"],
+        "mat": ["width", "height"],
         "page": ["width", "height"]
     }
 
@@ -43,6 +43,7 @@ angular.module('myApp.controllers', [])
     var canvas_colour = "LightGray";
     var canvas_padding = 10; // px
     var mat_colour = "DarkKhaki";
+    var font_size = 12;
 
     function convert_unit(value, from_unit, to_unit) {
         if (from_unit == to_unit) {
@@ -126,9 +127,16 @@ angular.module('myApp.controllers', [])
             $log.info("TODO: Display annotations");
             if (y1 == y2) {
                 //line is horizontal
+                ctx.font= font_size.toString() + "px Verdana";
+                ctx.fillStyle="Black";
+                ctx.fillText(annotation, x1, (y1 - 5));
+
             } else if (x1 == x2) {
                 //line is vertical
-
+                ctx.font= font_size.toString() + "px Verdana";
+                ctx.fillStyle="Black";
+                var text_y = y1 + ((y2 - y1) / 2);
+                ctx.fillText(annotation, x1, text_y);
             } else {
                 $log.error("Cannot place annotation on diagonal line");
             }
@@ -257,7 +265,7 @@ angular.module('myApp.controllers', [])
                         calculated_bottom_panel_offset,
                         canvas.width/2,
                         calculated_mat_height + top_mat_offset,
-                        $scope.page_top_offset.toString());
+                        $scope.window_bottom_offset.toString());
                 }
             }
         };
@@ -290,7 +298,7 @@ angular.module('myApp.controllers', [])
                 calculated_page_top_offset + calculated_page_height,
                 canvas.width/2,
                 calculated_mat_height + top_mat_offset,
-                $scope.page_top_offset.toString());
+                $scope.page_bottom_offset.toString());
         }
 
     }
