@@ -111,10 +111,6 @@ angular.module('myApp.controllers', [])
     }
 
     function drawLineWithAnnotation(ctx, x1, y1, x2, y2, annotation) {
-        $log.info(x1);
-        $log.info(y1);
-        $log.info(x2);
-        $log.info(y2);
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
@@ -124,7 +120,6 @@ angular.module('myApp.controllers', [])
 
         if (annotation.length > 0)
         {
-            $log.info("TODO: Display annotations");
             if (y1 == y2) {
                 //line is horizontal
                 ctx.font= font_size.toString() + "px Verdana";
