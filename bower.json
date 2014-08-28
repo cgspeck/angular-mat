@@ -11,6 +11,10 @@
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "html5-boilerplate": "~4.3.0",
-    "angular-bootstrap": "0.11.0"
+    "angular-bootstrap": "0.11.0",
+    "bootstrap": "3.1.1"
+  },
+  "resolutions": {
+    "bootstrap": "3.1.1"
   }
 }
