@@ -6,17 +6,17 @@
                 <div class="col-md-4" class="form-group">
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
-                        <label for="sheet_units" ng-model="sheet_units">Units:</label>
-                        <select id="sheet_units" ng-model="sheet_units" ng-change="convertInputs('sheet')">
+                        <label for="mat_units" ng-model="mat_units">Units:</label>
+                        <select id="mat_units" ng-model="mat_units" ng-change="convertInputs('sheet')">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
                         </select>
                         <br/>
-                        <label for="sheet_width">Width:</label>
-                        <input id="sheet_width" type="number" step="any" ng-model="sheet_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="sheet_height">Height:</label>
-                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="mat_width">Width:</label>
+                        <input id="mat_width" type="number" step="any" ng-model="mat_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="mat_height">Height:</label>
+                        <input id="mat_height" type="number" step="any" ng-model="mat_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     <br/>
                     <fieldset>
