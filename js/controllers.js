@@ -6,8 +6,8 @@
 angular.module('myApp.controllers', [])
   .controller('matBoardCalculator', ['$scope', '$log', '$filter',
     function($scope, $log, $filter) {
-    $scope.sheet_width = 40; // internally store values as metric mm
-    $scope.sheet_height = 40; // internally store values as metric mm
+    $scope.mat_width = 40; // internally store values as metric mm
+    $scope.mat_height = 40; // internally store values as metric mm
     $scope.page_width = 29.7;
     $scope.page_height = 21;
     $scope.image_width = 20;
@@ -16,13 +16,14 @@ angular.module('myApp.controllers', [])
     //$scope.image_top_margin = 0;
     $scope.options_overlap = 0.3; // mm
     $scope.options_bottom_weight = 2.5;
+    $scope.options_show_measurements = true;
 
     $scope.options_units = "cm";
     $scope._options_units = "cm";
     $scope.image_units = "cm";
     $scope._image_units = "cm";
-    $scope.sheet_units = "cm";
-    $scope._sheet_units = "cm";
+    $scope.mat_units = "cm";
+    $scope._mat_units = "cm";
     $scope.page_units = "cm";
     $scope._page_units = "cm";
 
@@ -30,7 +31,7 @@ angular.module('myApp.controllers', [])
     var selector_fields_map = {
         "options" : ["overlap", "bottom_weight"],
         "image": ["width", "height"],
-        "sheet": ["width", "height"],
+        "mat": ["width", "height"],
         "page": ["width", "height"]
     }
 
@@ -42,6 +43,7 @@ angular.module('myApp.controllers', [])
     var canvas_colour = "LightGray";
     var canvas_padding = 10; // px
     var mat_colour = "DarkKhaki";
+    var font_size = 12;
 
     function convert_unit(value, from_unit, to_unit) {
         if (from_unit == to_unit) {
@@ -72,7 +74,7 @@ angular.module('myApp.controllers', [])
     }
 
     function normaliseFigures() {
-        var fields = ['sheet_width', 'sheet_height', 'image_width',
+        var fields = ['mat_width', 'mat_height', 'image_width',
             'image_height', 'options_overlap',
             'options_bottom_weight', 'page_height', 'page_width'];
         fields.map( function(item) {
@@ -85,17 +87,17 @@ angular.module('myApp.controllers', [])
         the canvas within given padding */
         var avaliable_width = canvas.width - (2 * canvas_padding);
         var avaliable_height = canvas.height - (2 * canvas_padding);
-        var height_difference = avaliable_height - $scope._sheet_height;
-        var width_difference = avaliable_width - $scope._sheet_width;
+        var height_difference = avaliable_height - $scope._mat_height;
+        var width_difference = avaliable_width - $scope._mat_width;
 
         if (height_difference < 0 || width_difference < 0) {
             //sheet is larger than canvas, need to return a value < 1
             if (width_difference < height_difference) {
                 //limit by avaliable width
-                return (avaliable_width / $scope._sheet_width);
+                return (avaliable_width / $scope._mat_width);
             } else {
                 //limit by avaliable height
-                return (avaliable_height / $scope._sheet_height);
+                return (avaliable_height / $scope._mat_height);
             }
         } else {
             return 1;
@@ -106,6 +108,34 @@ angular.module('myApp.controllers', [])
     function clearCanvas(canvas) {
         var ctx = canvas.getContext("2d");
         ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+
+    function drawLineWithAnnotation(ctx, x1, y1, x2, y2, annotation) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth=1;
+        ctx.stroke();
+        ctx.closePath();
+
+        if (annotation.length > 0)
+        {
+            if (y1 == y2) {
+                //line is horizontal
+                ctx.font= font_size.toString() + "px Verdana";
+                ctx.fillStyle="Black";
+                ctx.fillText(annotation, x1, (y1 - 5));
+
+            } else if (x1 == x2) {
+                //line is vertical
+                ctx.font= font_size.toString() + "px Verdana";
+                ctx.fillStyle="Black";
+                var text_y = y1 + ((y2 - y1) / 2);
+                ctx.fillText(annotation, x1, text_y);
+            } else {
+                $log.error("Cannot place annotation on diagonal line");
+            }
+        }
     }
 
     function drawSheetAndImage(canvas, canvas_id) {
@@ -122,12 +152,12 @@ angular.module('myApp.controllers', [])
         var avaliable_width = canvas.width - (2 * canvas_padding);
         var avaliable_height = canvas.height - (2 * canvas_padding);
         var scale = calculateScale(canvas);
-        var calculated_sheet_width = $scope._sheet_width * scale;
-        var calculated_sheet_height = $scope._sheet_height * scale;
-        var left_sheet_offset = canvas_padding + ((avaliable_width - calculated_sheet_width) / 2);
-        var top_sheet_offset = canvas_padding + ((avaliable_height - calculated_sheet_height) / 2);
+        var calculated_mat_width = $scope._mat_width * scale;
+        var calculated_mat_height = $scope._mat_height * scale;
+        var left_mat_offset = canvas_padding + ((avaliable_width - calculated_mat_width) / 2);
+        var top_mat_offset = canvas_padding + ((avaliable_height - calculated_mat_height) / 2);
         // drawing the mat board itself
-        ctx.rect(left_sheet_offset, top_sheet_offset, calculated_sheet_width, calculated_sheet_height);
+        ctx.rect(left_mat_offset, top_mat_offset, calculated_mat_width, calculated_mat_height);
         ctx.lineWidth=3;
         ctx.strokeStyle="Black";
         ctx.stroke();
@@ -136,8 +166,8 @@ angular.module('myApp.controllers', [])
         // now draw the paper sheet
         var calculated_page_width = $scope._page_width * scale;
         var calculated_page_height = $scope._page_height * scale;
-        var calculated_page_left_offset = left_sheet_offset + ($scope._page_left_offset * scale);
-        var calculated_page_top_offset = top_sheet_offset + ($scope._page_top_offset * scale);
+        var calculated_page_left_offset = left_mat_offset + ($scope._page_left_offset * scale);
+        var calculated_page_top_offset = top_mat_offset + ($scope._page_top_offset * scale);
 
         if (calculated_page_width < 1) {
             calculated_page_width = 1;
@@ -186,31 +216,92 @@ angular.module('myApp.controllers', [])
                 ctx.fillStyle = mat_colour;
                 // left panel
                 var calculated_panel_width = $scope._window_left_offset * scale;
-                ctx.fillRect(left_sheet_offset, top_sheet_offset,
-                    calculated_panel_width, calculated_sheet_height);
+                ctx.fillRect(left_mat_offset, top_mat_offset,
+                    calculated_panel_width, calculated_mat_height);
                 // right panel
-                var right_panel_offset = (calculated_sheet_width + left_sheet_offset) - calculated_panel_width;
-                ctx.fillRect(right_panel_offset, top_sheet_offset,
-                    calculated_panel_width, calculated_sheet_height);
+                var right_panel_offset = (calculated_mat_width + left_mat_offset) - calculated_panel_width;
+                ctx.fillRect(right_panel_offset, top_mat_offset,
+                    calculated_panel_width, calculated_mat_height);
                 // top
                 var calculated_top_panel_height = $scope._window_top_offset * scale;
-                ctx.fillRect(left_sheet_offset, top_sheet_offset,
-                    calculated_sheet_width, calculated_top_panel_height);
+                ctx.fillRect(left_mat_offset, top_mat_offset,
+                    calculated_mat_width, calculated_top_panel_height);
                 //bottom
                 var calculated_bottom_panel_height = $scope._window_bottom_offset * scale;
-                var calculated_bottom_panel_offset = (top_sheet_offset + calculated_sheet_height) - calculated_bottom_panel_height;
-                ctx.fillRect(left_sheet_offset, calculated_bottom_panel_offset,
-                    calculated_sheet_width, calculated_bottom_panel_height);
+                var calculated_bottom_panel_offset = (top_mat_offset + calculated_mat_height) - calculated_bottom_panel_height;
+                ctx.fillRect(left_mat_offset, calculated_bottom_panel_offset,
+                    calculated_mat_width, calculated_bottom_panel_height);
+
+                if ($scope.options_show_measurements) {
+                    // draw the lines between the mat and the window
+                    drawLineWithAnnotation(ctx,
+                        left_mat_offset,
+                        canvas.height/2,
+                        left_mat_offset + calculated_panel_width,
+                        canvas.height/2,
+                        $scope.window_left_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        right_panel_offset,
+                        canvas.height/2,
+                        right_panel_offset + calculated_panel_width,
+                        canvas.height/2,
+                        $scope.window_left_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        canvas.width/2,
+                        top_mat_offset,
+                        canvas.width/2,
+                        top_mat_offset + calculated_top_panel_height,
+                        $scope.window_top_offset.toString());
+
+                    drawLineWithAnnotation(ctx,
+                        canvas.width/2,
+                        calculated_bottom_panel_offset,
+                        canvas.width/2,
+                        calculated_mat_height + top_mat_offset,
+                        $scope.window_bottom_offset.toString());
+                }
             }
         };
-        
+
+        if ($scope.options_show_measurements && canvas_id == "back_canvas") {
+            // draw the lines between the mat and the sheet
+            drawLineWithAnnotation(ctx,
+                left_mat_offset,
+                canvas.height/2,
+                calculated_page_left_offset,
+                canvas.height/2,
+                $scope.page_left_offset.toString());
+
+            drawLineWithAnnotation(ctx,
+                calculated_page_left_offset + calculated_page_width,
+                canvas.height/2,
+                calculated_mat_width + left_mat_offset,
+                canvas.height/2,
+                $scope.page_left_offset.toString());
+
+            drawLineWithAnnotation(ctx,
+                canvas.width/2,
+                top_mat_offset,
+                canvas.width/2,
+                calculated_page_top_offset,
+                $scope.page_top_offset.toString());
+
+            drawLineWithAnnotation(ctx,
+                canvas.width/2,
+                calculated_page_top_offset + calculated_page_height,
+                canvas.width/2,
+                calculated_mat_height + top_mat_offset,
+                $scope.page_bottom_offset.toString());
+        }
 
     }
 
     function calculateDistances() {
         // Window - for front mat
-        $scope._window_left_offset = ($scope._sheet_width - $scope._image_width) / 2;  //internally using mm
-        $scope._window_top_offset = ($scope._sheet_height - $scope._image_height) / 2;  //internally using mm
+        $scope._window_left_offset = ($scope._mat_width - $scope._image_width) / 2;  //internally using mm
+        $scope._window_top_offset = ($scope._mat_height - $scope._image_height) / 2;  //internally using mm
         $scope._window_bottom_offset = $scope._window_top_offset;
         $scope._window_top_offset = $scope._window_top_offset - $scope._options_bottom_weight;
         $scope._window_bottom_offset = $scope._window_bottom_offset + $scope._options_bottom_weight;
@@ -219,8 +310,8 @@ angular.module('myApp.controllers', [])
             $scope[item] = $scope[item] + $scope._options_overlap; // adjust for overlap
         });
         // Print - for back
-        $scope._page_left_offset = ($scope._sheet_width - $scope._page_width) / 2;  //internally using mm
-        $scope._page_top_offset = ($scope._sheet_height - $scope._page_height) / 2;  //internally using mm
+        $scope._page_left_offset = ($scope._mat_width - $scope._page_width) / 2;  //internally using mm
+        $scope._page_top_offset = ($scope._mat_height - $scope._page_height) / 2;  //internally using mm
         $scope._page_bottom_offset = $scope._page_top_offset + $scope._options_bottom_weight;
         $scope._page_top_offset = $scope._page_top_offset - $scope._options_bottom_weight;
 
@@ -257,10 +348,10 @@ angular.module('myApp.controllers', [])
 
         angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
         angular.element(document.getElementById("image_height")).removeClass("ng-invalid");
-        angular.element(document.getElementById("sheet_height")).removeClass("ng-invalid");
+        angular.element(document.getElementById("mat_height")).removeClass("ng-invalid");
         angular.element(document.getElementById("image_width")).removeClass("ng-invalid");
         angular.element(document.getElementById("page_width")).removeClass("ng-invalid");
-        angular.element(document.getElementById("sheet_width")).removeClass("ng-invalid");
+        angular.element(document.getElementById("mat_width")).removeClass("ng-invalid");
 
         if ($scope._image_height > $scope._page_height) {
             ok = false;
@@ -269,11 +360,11 @@ angular.module('myApp.controllers', [])
             document.getElementById("image_height").className += " ng-invalid";
         }
 
-        if ($scope._page_height > $scope._sheet_height) {
+        if ($scope._page_height > $scope._mat_height) {
             ok = false;
             msg = lnbrk(msg) + "Page height must be less than mat height.";
             document.getElementById("page_height").className += " ng-invalid";
-            document.getElementById("sheet_height").className += " ng-invalid";
+            document.getElementById("mat_height").className += " ng-invalid";
         }
 
         if ($scope._image_width > $scope._page_width) {
@@ -283,10 +374,10 @@ angular.module('myApp.controllers', [])
             angular.element(document.getElementById("page_width")).addClass("ng-invalid");
         }
 
-        if ($scope._page_width > $scope._sheet_width) {
+        if ($scope._page_width > $scope._mat_width) {
             ok = false;
             msg = lnbrk(msg) + "Page width must be less than mat width.";
-            angular.element(document.getElementById("sheet_width")).addClass("ng-invalid");
+            angular.element(document.getElementById("mat_width")).addClass("ng-invalid");
             angular.element(document.getElementById("page_width")).addClass("ng-invalid");
         }
 
@@ -350,9 +441,6 @@ angular.module('myApp.controllers', [])
                 $scope[selector + "_" + value] = parseFloat(
                     $filter('number')(unrounded_value,
                         decimal_places($scope[selector + "_units"])).replace(/,/g, ''));
-                //$scope[selector + "_" + value] = parseFloat(3999.999);
-                //$scope[selector + "_" + value] = $filter('number')(parseFloat(unrounded_value),
-                //        decimal_places($scope[selector + "_units"])));
             });
             $scope["_" + selector + "_units"] = $scope[selector + "_units"];
 

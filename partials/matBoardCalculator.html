@@ -6,17 +6,17 @@
                 <div class="col-md-4" class="form-group">
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
-                        <label for="sheet_units" ng-model="sheet_units">Units:</label>
-                        <select id="sheet_units" ng-model="sheet_units" ng-change="convertInputs('sheet')">
+                        <label for="mat_units" ng-model="mat_units">Units:</label>
+                        <select id="mat_units" ng-model="mat_units" ng-change="convertInputs('mat')">
                           <option value="mm">mm</option>
                           <option value="cm">cm</option>
                           <option value="inches">inches</option>
                         </select>
                         <br/>
-                        <label for="sheet_width">Width:</label>
-                        <input id="sheet_width" type="number" step="any" ng-model="sheet_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
-                        <label for="sheet_height">Height:</label>
-                        <input id="sheet_height" type="number" step="any" ng-model="sheet_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="mat_width">Width:</label>
+                        <input id="mat_width" type="number" step="any" ng-model="mat_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <label for="mat_height">Height:</label>
+                        <input id="mat_height" type="number" step="any" ng-model="mat_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
                     </fieldset>
                     <br/>
                     <fieldset>
@@ -67,6 +67,7 @@
                     <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="updateCanvas()" required></input>
                     <label for="options_bottom_weight">Bottom weight:</label>
                     <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                    <label for="options_show_measurements">Show measurements:   </label><input type="checkbox" ng-model="options_show_measurements" id="options_show_measurements" ng-change="updateCanvas()">
                 </fieldset>
                 </form>
                 <div ng-hide="sizeErrors">
@@ -117,5 +118,5 @@
             </div>
           </div>
     </div>
-    <a href="https://angularjs.org/">AngularJS</a> Mat Board calculator by <a href="http://www.chrisspeck.com">Chris Speck</a>, (c) 2014 subject to <a href="http://opensource.org/licenses/BSD-3-Clause">3 clause BSD license</a> and source avaliable at <a href="https://github.com/cgspeck/angular-mat">Github</a>.
+    <a href="https://angularjs.org/">AngularJS</a> Mat Board calculator by <a href="http://www.chrisspeck.com">Chris Speck</a>, (c) 2014 subject to <a href="LICENSE.txt">3 clause BSD license</a> and source avaliable at <a href="https://github.com/cgspeck/angular-mat">Github</a>.
 </div>
