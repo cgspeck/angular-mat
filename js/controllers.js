@@ -12,8 +12,6 @@ angular.module('myApp.controllers', [])
     $scope.page_height = 21;
     $scope.image_width = 20;
     $scope.image_height = 20;
-    //$scope.image_left_margin = 0;
-    //$scope.image_top_margin = 0;
     $scope.options_overlap = 0.3; // mm
     $scope.options_bottom_weight = 2.5;
     $scope.options_show_measurements = true;
@@ -33,7 +31,7 @@ angular.module('myApp.controllers', [])
         "image": ["width", "height"],
         "mat": ["width", "height"],
         "page": ["width", "height"]
-    }
+    };
 
     $scope.sizeErrors = false;
     $scope.sizeErrorString = "";
@@ -343,7 +341,7 @@ angular.module('myApp.controllers', [])
         var msg = "";
 
         function lnbrk(msg) {
-            return (msg.length == 0) ? "" : msg + "\n";
+            return (msg.length === 0) ? "" : msg + "\n";
         }
 
         angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
@@ -426,7 +424,7 @@ angular.module('myApp.controllers', [])
         }
     };
 
-    $scope.convertInputs = function(selector) {
+    var convertInputs = function(selector) {
         if (angular.isUndefined($scope[selector + "_units"])) {
             $log.error("convertInputs: Unrecognised selector:" + selector);
             return;
@@ -448,7 +446,18 @@ angular.module('myApp.controllers', [])
                 $scope.updateCanvas();
             }
         }
-    }
+    };
+
+    $scope.convertUnits = function() {
+        /* Called when the unit selector is changed and uses convertInputs to
+        update values */
+
+        ['mat', 'image', 'page', 'options'].map( function(item) {
+            $scope[item + '_units'] = $scope.options_units;
+            convertInputs(item);
+
+        });
+    };
 
     //initalise the form
     $scope.updateCanvas();
