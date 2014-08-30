@@ -6,24 +6,24 @@
 angular.module('myApp.controllers', [])
   .controller('matBoardCalculator', ['$scope', '$log', '$filter',
     function($scope, $log, $filter) {
-    $scope.mat_width = 40; // internally store values as metric mm
-    $scope.mat_height = 40; // internally store values as metric mm
-    $scope.page_width = 29.7;
-    $scope.page_height = 21;
-    $scope.image_width = 20;
-    $scope.image_height = 20;
-    $scope.options_overlap = 0.3; // mm
-    $scope.options_bottom_weight = 2.5;
+    $scope._mat_width = 400; // internally store values as metric mm
+    $scope._mat_height = 400; // internally store values as metric mm
+    $scope._page_width = 297;
+    $scope._page_height = 210;
+    $scope._image_width = 200;
+    $scope._image_height = 200;
+    $scope._options_overlap = 3; // mm
+    $scope._options_bottom_weight = 25;
     $scope.options_show_measurements = true;
 
     $scope.options_units = "cm";
-    $scope._options_units = "cm";
+    $scope._options_units = "mm";
     $scope.image_units = "cm";
-    $scope._image_units = "cm";
+    $scope._image_units = "mm";
     $scope.mat_units = "cm";
-    $scope._mat_units = "cm";
+    $scope._mat_units = "mm";
     $scope.page_units = "cm";
-    $scope._page_units = "cm";
+    $scope._page_units = "mm";
 
     // a dictionary binding unit selector to fields
     var selector_fields_map = {
@@ -469,17 +469,13 @@ angular.module('myApp.controllers', [])
         ['mat', 'image', 'page', 'options'].map( function(item) {
             $scope[item + '_units'] = $scope.options_units;
             convertInputs(item);
-
         });
         block_update = false;
         $scope.updateCanvas();
     };
 
     //initalise the form
-    $scope.normalise_input('mat');
-    $scope.normalise_input('page');
-    $scope.normalise_input('image');
-    $scope.normalise_input('options');
+    $scope.convertUnits();
     $scope.updateCanvas();
 
   }]);
