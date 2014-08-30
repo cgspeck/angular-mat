@@ -91,7 +91,7 @@ angular.module('myApp.controllers', [])
         });
         $scope["_" + selector + "_units"] = $scope[selector + "_units"];
         $scope.updateCanvas();
-    }
+    };
 
     function calculateScale(canvas) {
         /* returns a multiplication factor so that the drawn sheet fits within
