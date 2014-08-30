@@ -31,7 +31,7 @@ angular.module('myApp.controllers', [])
         "image": ["width", "height"],
         "mat": ["width", "height"],
         "page": ["width", "height"]
-    }
+    };
 
     $scope.sizeErrors = false;
     $scope.sizeErrorString = "";
@@ -341,7 +341,7 @@ angular.module('myApp.controllers', [])
         var msg = "";
 
         function lnbrk(msg) {
-            return (msg.length == 0) ? "" : msg + "\n";
+            return (msg.length === 0) ? "" : msg + "\n";
         }
 
         angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
@@ -446,7 +446,7 @@ angular.module('myApp.controllers', [])
                 $scope.updateCanvas();
             }
         }
-    }
+    };
 
     $scope.convertUnits = function() {
         /* Called when the unit selector is changed and uses convertInputs to
@@ -457,7 +457,7 @@ angular.module('myApp.controllers', [])
             convertInputs(item);
 
         });
-    }
+    };
 
     //initalise the form
     $scope.updateCanvas();
