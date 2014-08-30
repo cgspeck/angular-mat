@@ -6,13 +6,6 @@
                 <div class="col-md-4" class="form-group">
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
-                        <label for="mat_units" ng-model="mat_units">Units:</label>
-                        <select id="mat_units" ng-model="mat_units" ng-change="convertInputs('mat')">
-                          <option value="mm">mm</option>
-                          <option value="cm">cm</option>
-                          <option value="inches">inches</option>
-                        </select>
-                        <br/>
                         <label for="mat_width">Width:</label>
                         <input id="mat_width" type="number" step="any" ng-model="mat_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="mat_height">Height:</label>
@@ -22,13 +15,6 @@
                     <fieldset>
                         <legend>Image Dimensions</legend>
                         <p>This is the size of the image which you are printing.</p>
-                        <label for="image_units">Units:</label>
-                        <select id="image_units" ng-model="image_units" ng-change="convertInputs('image')">
-                          <option value="mm">mm</option>
-                          <option value="cm">cm</option>
-                          <option value="inches">inches</option>
-                        </select>
-                        </br>
                         <label for="image_width">Width:</label>
                         <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="image_height">Height:</label>
@@ -38,13 +24,6 @@
                     <fieldset>
                         <legend>Page Dimensions</legend>
                         <p>This is the size of the paper or material on which you printing the image. It is here to help you place the paper/material on the backmat.</p>
-                        <label for="page_units">Units:</label>
-                        <select id="page_units" ng-model="page_units" ng-change="convertInputs('page')">
-                          <option value="mm">mm</option>
-                          <option value="cm">cm</option>
-                          <option value="inches">inches</option>
-                        </select>
-                        </br>
                         <label for="page_width">Width:</label>
                         <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
                         <label for="page_height">Height:</label>
@@ -55,8 +34,8 @@
             <div class="col-md-4" class="form-group" id="calulationsDiv">
                 <fieldset>
                     <legend>Options</legend>
-                    <label for="options_units">Units for options & results :</label>
-                    <select id="options_units" ng-model="options_units" ng-change="convertInputs('options')">
+                    <label for="options_units">Units: </label>
+                    <select id="options_units" ng-model="options_units" ng-change="convertUnits()">
                       <option value="mm">mm</option>
                       <option value="cm">cm</option>
                       <option value="inches">inches</option>
