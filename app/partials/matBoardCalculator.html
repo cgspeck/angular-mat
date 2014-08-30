@@ -7,27 +7,27 @@
                     <fieldset>
                         <legend>Mat Board Dimensions</legend>
                         <label for="mat_width">Width:</label>
-                        <input id="mat_width" type="number" step="any" ng-model="mat_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="mat_width" type="number" step="any" ng-model="mat_width" class="form-control" min="0" ng-blur="normalise_input('mat')" required></input>
                         <label for="mat_height">Height:</label>
-                        <input id="mat_height" type="number" step="any" ng-model="mat_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="mat_height" type="number" step="any" ng-model="mat_height" class="form-control"min="0" ng-blur="normalise_input('mat')" required></input>
                     </fieldset>
                     <br/>
                     <fieldset>
                         <legend>Image Dimensions</legend>
                         <p>This is the size of the image which you are printing.</p>
                         <label for="image_width">Width:</label>
-                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="normalise_input('image')" required></input>
                         <label for="image_height">Height:</label>
-                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="normalise_input('image')" required></input>
                     </fieldset>
                     <br/>
                     <fieldset>
                         <legend>Page Dimensions</legend>
                         <p>This is the size of the paper or material on which you printing the image. It is here to help you place the paper/material on the backmat.</p>
                         <label for="page_width">Width:</label>
-                        <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="page_width" type="number" step="any"  ng-model="page_width" class="form-control" min="0" ng-blur="normalise_input('page')" required></input>
                         <label for="page_height">Height:</label>
-                        <input id="page_height" type="number" step="any" ng-model="page_height" class="form-control"min="0" ng-blur="updateCanvas()" required></input>
+                        <input id="page_height" type="number" step="any" ng-model="page_height" class="form-control"min="0" ng-blur="normalise_input('page')" required></input>
                     </fieldset>
                     </br>                    
             </div>
@@ -43,9 +43,9 @@
                     <br/>
                     <label for="options_overlap">Image/Mat overlap</label>
                     <p>Positive numbers mean that the mat will overlay the image. Negative numbers will reveal part of the page through the front mat window.</p>
-                    <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="updateCanvas()" required></input>
+                    <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="normalise_input('options')" required></input>
                     <label for="options_bottom_weight">Bottom weight:</label>
-                    <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="updateCanvas()" required></input>
+                    <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="normalise_input('options')" required></input>
                     <label for="options_show_measurements">Show measurements:   </label><input type="checkbox" ng-model="options_show_measurements" id="options_show_measurements" ng-change="updateCanvas()">
                 </fieldset>
                 </form>
