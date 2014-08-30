@@ -74,6 +74,10 @@ angular.module('myApp.controllers', [])
     }
 
     $scope.normalise_input = function(selector) {
+        if (block_update) {
+            return;
+        }
+
         if (angular.isUndefined($scope[selector + "_units"])) {
             $log.error("normalise_input: Unrecognised selector:" + selector);
             return;
@@ -86,7 +90,7 @@ angular.module('myApp.controllers', [])
                 "mm");
         });
         $scope["_" + selector + "_units"] = $scope[selector + "_units"];
-        $log.debug($scope._image_width);
+        $scope.updateCanvas();
     }
 
     function calculateScale(canvas) {
@@ -401,8 +405,6 @@ angular.module('myApp.controllers', [])
         }
         // check if the form exists and break if invalid
         // form will not be defined the first time the screen loads
-        $log.debug('updateCanvas');
-        $log.debug($scope._image_width);
         if (angular.isDefined($scope.myForm)) {
             if ($scope.myForm.$invalid) {
                 $scope.sizeErrors = true;
@@ -411,12 +413,8 @@ angular.module('myApp.controllers', [])
             }
 
         }
-        $log.debug($scope._image_width);        
-        //normaliseFigures();
-        $log.debug($scope._image_width);
 
         var size_validation = do_size_validations();
-        $log.debug($scope._image_width);
 
         if (!size_validation.valid) {
             $scope.sizeErrors = true;
@@ -427,7 +425,6 @@ angular.module('myApp.controllers', [])
         $scope.sizeErrors = false;
         
         calculateDistances();
-        $log.debug($scope._image_width);
 
         if ($scope.canvasSupported) {
             // make our canvasses as wide as they can be
@@ -454,13 +451,7 @@ angular.module('myApp.controllers', [])
                     $scope["_" + selector + "_" + value],
                     "mm",
                     $scope[selector + "_units"]);
-                /*$scope[selector + "_" + value] = parseFloat(
-                    $filter('number')(unrounded_value,
-                        decimal_places($scope[selector + "_units"])).replace(/,/g, ''));*/
-                /*$log.debug('internal value');
-                $log.debug($scope["_" + selector + "_" + value]);
-                $log.debug('unrounded_value:');
-                $log.debug(unrounded_value);*/
+
                 $scope[selector + '_' + value] = Math.round(unrounded_value * 100) / 100;
             });
             $scope["_" + selector + "_units"] = $scope[selector + "_units"];
@@ -474,17 +465,14 @@ angular.module('myApp.controllers', [])
     $scope.convertUnits = function() {
         /* Called when the unit selector is changed and uses convertInputs to
         update values */
-        $log.debug($scope._image_width);
         block_update = true;
         ['mat', 'image', 'page', 'options'].map( function(item) {
             $scope[item + '_units'] = $scope.options_units;
             convertInputs(item);
 
         });
-        $log.debug($scope._image_width);
         block_update = false;
         $scope.updateCanvas();
-        //$log.debug($scope._image_width);
     };
 
     //initalise the form
