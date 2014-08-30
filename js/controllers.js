@@ -43,6 +43,8 @@ angular.module('myApp.controllers', [])
     var mat_colour = "DarkKhaki";
     var font_size = 12;
 
+    var block_update = false;
+
     function convert_unit(value, from_unit, to_unit) {
         if (from_unit == to_unit) {
             return value;
@@ -71,14 +73,25 @@ angular.module('myApp.controllers', [])
         }
     }
 
-    function normaliseFigures() {
-        var fields = ['mat_width', 'mat_height', 'image_width',
-            'image_height', 'options_overlap',
-            'options_bottom_weight', 'page_height', 'page_width'];
-        fields.map( function(item) {
-            $scope['_' + item] = parseFloat(convert_unit($scope[item], $scope[item.split('_')[0] + "_units"], "mm"));
+    $scope.normalise_input = function(selector) {
+        if (block_update) {
+            return;
+        }
+
+        if (angular.isUndefined($scope[selector + "_units"])) {
+            $log.error("normalise_input: Unrecognised selector:" + selector);
+            return;
+        }
+
+        angular.forEach(selector_fields_map[selector], function(value, key) {
+            $scope['_' + selector + '_' + value] =  convert_unit(
+                $scope[selector + "_" + value],
+                $scope[selector + "_units"],
+                "mm");
         });
-    }
+        $scope["_" + selector + "_units"] = $scope[selector + "_units"];
+        $scope.updateCanvas();
+    };
 
     function calculateScale(canvas) {
         /* returns a multiplication factor so that the drawn sheet fits within
@@ -387,6 +400,9 @@ angular.module('myApp.controllers', [])
 
 
     $scope.updateCanvas = function() {
+        if (block_update) {
+            return;
+        }
         // check if the form exists and break if invalid
         // form will not be defined the first time the screen loads
         if (angular.isDefined($scope.myForm)) {
@@ -397,7 +413,6 @@ angular.module('myApp.controllers', [])
             }
 
         }
-        normaliseFigures();
 
         var size_validation = do_size_validations();
 
@@ -436,9 +451,8 @@ angular.module('myApp.controllers', [])
                     $scope["_" + selector + "_" + value],
                     "mm",
                     $scope[selector + "_units"]);
-                $scope[selector + "_" + value] = parseFloat(
-                    $filter('number')(unrounded_value,
-                        decimal_places($scope[selector + "_units"])).replace(/,/g, ''));
+
+                $scope[selector + '_' + value] = Math.round(unrounded_value * 100) / 100;
             });
             $scope["_" + selector + "_units"] = $scope[selector + "_units"];
 
@@ -451,15 +465,21 @@ angular.module('myApp.controllers', [])
     $scope.convertUnits = function() {
         /* Called when the unit selector is changed and uses convertInputs to
         update values */
-
+        block_update = true;
         ['mat', 'image', 'page', 'options'].map( function(item) {
             $scope[item + '_units'] = $scope.options_units;
             convertInputs(item);
 
         });
+        block_update = false;
+        $scope.updateCanvas();
     };
 
     //initalise the form
+    $scope.normalise_input('mat');
+    $scope.normalise_input('page');
+    $scope.normalise_input('image');
+    $scope.normalise_input('options');
     $scope.updateCanvas();
 
   }]);
