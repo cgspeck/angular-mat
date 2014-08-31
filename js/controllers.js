@@ -470,6 +470,7 @@ angular.module('myApp.controllers', [])
             $scope[item + '_units'] = $scope.options_units;
             convertInputs(item);
         });
+        ga('send', 'event', 'set_units', $scope.options_units);
         block_update = false;
         $scope.updateCanvas();
     };
