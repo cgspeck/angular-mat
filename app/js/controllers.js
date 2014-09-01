@@ -12,6 +12,9 @@ angular.module('myApp.controllers', [])
     $scope._page_height = 210;
     $scope._image_width = 200;
     $scope._image_height = 200;
+    $scope.image_usemine = false;
+    $scope._user_image = null;
+
     $scope._options_overlap = 3; // mm
     $scope._options_bottom_weight = 25;
     $scope.options_show_measurements = true;
@@ -473,6 +476,44 @@ angular.module('myApp.controllers', [])
         block_update = false;
         $scope.updateCanvas();
     };
+
+    $scope.showFileSelector = function() {
+        if ($scope.image_usemine) {
+            $log.debug("usemine is true");
+            document.getElementById("fileElem").click();
+            //angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
+        } else {
+            $log.debug("usemine is false");
+            updateCanvas();
+        }
+    }
+
+    $scope.handleFiles = function(fileList) {
+        $log.debug(fileList);
+        var file = fileList[i];
+        var imageType = /image.*/;
+    
+        if (!file.type.match(imageType)) {
+            continue;
+        }
+        var img = document.createElement("img");
+        img.classList.add("obj");
+        img.file = file;
+        preview.appendChild(img); // Assuming that "preview" is a the div output where the content will be displayed.
+        
+        var reader = new FileReader();
+        /*reader.onload = (
+            function(aImg) {
+                return function(e) {
+                    aImg.src = e.target.result; 
+                }; 
+            })(img);*/
+        reader.onload = function(e) {
+            $scope._user_image = reader.result;
+            $scope.updateCanvas();
+        }
+        reader.readAsDataURL(file);
+    }
 
     //initalise the form
     $scope.convertUnits();

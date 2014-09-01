@@ -19,6 +19,9 @@
                         <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="normalise_input('image')" required></input>
                         <label for="image_height">Height:</label>
                         <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="normalise_input('image')" required></input>
+                        <label for="image_usemine">Use my image:&nbsp;&nbsp;</label><input type="checkbox" ng-model="image_usemine" id="image_usemine" ng-change="showFileSelector()"><br/>
+                        <small>Your image is <strong>not</strong> uploaded to the server.</small>
+                        <input type="file" id="fileElem" ng-model="image_file" accept="image/*" style="display:none" onchange="angular.element(this).scope().handleFiles(this.files)">
                     </fieldset>
                     <br/>
                     <fieldset>
@@ -46,7 +49,7 @@
                     <input id="options_overlap" type="number" step="any" ng-model="options_overlap" class="form-control" ng-blur="normalise_input('options')" required></input>
                     <label for="options_bottom_weight">Bottom weight:</label>
                     <input type="number" step="any" id="options_bottom_weight" ng-model="options_bottom_weight" class="form-control" min="0" ng-blur="normalise_input('options')" required></input>
-                    <label for="options_show_measurements">Show measurements:   </label><input type="checkbox" ng-model="options_show_measurements" id="options_show_measurements" ng-change="updateCanvas()">
+                    <label for="options_show_measurements">Show measurements:&nbsp;&nbsp;</label><input type="checkbox" ng-model="options_show_measurements" id="options_show_measurements" ng-change="updateCanvas()">                    
                 </fieldset>
                 </form>
                 <div ng-hide="sizeErrors">
