@@ -537,9 +537,10 @@ angular.module('myApp.controllers', [])
 
         var reader = new FileReader();
         reader.onload = function(e) {
-            $scope.userimage_dataurl = reader.result;
-            $scope.updateCanvas();
-            $scope.$apply();
+            $scope.$apply( function() {
+                $scope.userimage_dataurl = reader.result;
+                $scope.updateCanvas();
+            });
         }
         reader.readAsDataURL(file);
     }
