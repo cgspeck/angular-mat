@@ -19,7 +19,8 @@
                         <input id="image_width" type="number" step="any"  ng-model="image_width" class="form-control" min="0" ng-blur="normalise_input('image')" required></input>
                         <label for="image_height">Height:</label>
                         <input id="image_height" type="number" step="any" ng-model="image_height" class="form-control"min="0" ng-blur="normalise_input('image')" required></input>
-                        <label for="image_usemine">Use my image:&nbsp;&nbsp;</label><input type="checkbox" ng-model="image_usemine" id="image_usemine" ng-change="showFileSelector()"><br/>
+                        <label for="image_usemine">Use my image:&nbsp;&nbsp;</label><input type="checkbox" ng-model="image_usemine" id="image_usemine" ng-change="usemine_trigger()">
+                        <a href ng-click="showFileSelector()" ng-show="showImageChangeLink()">Change</a><br/>
                         <small>Your image is <strong>not</strong> uploaded to the server.</small>
                         <input type="file" id="fileElem" ng-model="image_file" accept="image/*" style="display:none" onchange="angular.element(this).scope().handleFile(this.files)">
                     </fieldset>
