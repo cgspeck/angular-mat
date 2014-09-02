@@ -1,4 +1,4 @@
-/*globals window, Image, document*/
+/*globals window, Image, FileReader, document*/
 'use strict';
 
 /* Controllers */
@@ -402,8 +402,7 @@ angular.module('myApp.controllers', [])
             angular.element(document.getElementById("page_width")).addClass("ng-invalid");
         }
 
-        if (((($scope._mat_height - $scope._page_height)/ 2) + $scope._options_bottom_weight + $scope._page_height)
-            > $scope._mat_height) {
+        if (((($scope._mat_height - $scope._page_height)/ 2) + $scope._options_bottom_weight + $scope._page_height) > $scope._mat_height) {
             ok = false;
             msg = lnbrk(msg) + "Must increase mat height, reduce bottom weight or decrease page height.";
             angular.element(document.getElementById("mat_height")).addClass("ng-invalid");
@@ -433,9 +432,10 @@ angular.module('myApp.controllers', [])
 
         }
 
+        var results_div = document.getElementById('previewDiv');
+
         if ($scope.canvasSupported) {
             // make our canvasses as wide as they can be
-            var results_div = document.getElementById('previewDiv');
             // now draw on them
             ['front_canvas', 'back_canvas'].map( function(canvas_id) {
                 var canvas = document.getElementById(canvas_id);
@@ -457,8 +457,6 @@ angular.module('myApp.controllers', [])
         calculateDistances();
 
         if ($scope.canvasSupported) {
-            // make our canvasses as wide as they can be
-            var results_div = document.getElementById('previewDiv');
             // now draw on them
             ['front_canvas', 'back_canvas'].map( function(canvas_id) {
                 var canvas = document.getElementById(canvas_id);
@@ -508,18 +506,18 @@ angular.module('myApp.controllers', [])
         } else {
             $scope.updateCanvas();
         }
-    }
+    };
 
     $scope.showFileSelector = function() {
         document.getElementById("fileElem").click();
-    }
+    };
 
     $scope.showImageChangeLink = function() {
         /*
         Called to check whether or not the "Change" link should appear
         */
-        return ($scope.userimage_dataurl != null) && $scope.image_usemine;
-    }
+        return ($scope.userimage_dataurl !== null) && $scope.image_usemine;
+    };
 
     $scope.handleFile = function(fileList) {
         if (fileList.length === 0) {
@@ -541,9 +539,9 @@ angular.module('myApp.controllers', [])
                 $scope.userimage_dataurl = reader.result;
                 $scope.updateCanvas();
             });
-        }
+        };
         reader.readAsDataURL(file);
-    }
+    };
 
     //initalise the form
     $scope.convertUnits();
