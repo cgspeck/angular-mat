@@ -372,6 +372,7 @@ angular.module('myApp.controllers', [])
         angular.element(document.getElementById("image_width")).removeClass("ng-invalid");
         angular.element(document.getElementById("page_width")).removeClass("ng-invalid");
         angular.element(document.getElementById("mat_width")).removeClass("ng-invalid");
+        angular.element(document.getElementById("options_bottom_weight")).removeClass("ng-invalid");
 
         if ($scope._image_height > $scope._page_height) {
             ok = false;
@@ -401,6 +402,15 @@ angular.module('myApp.controllers', [])
             angular.element(document.getElementById("page_width")).addClass("ng-invalid");
         }
 
+        if (((($scope._mat_height - $scope._page_height)/ 2) + $scope._options_bottom_weight + $scope._page_height)
+            > $scope._mat_height) {
+            ok = false;
+            msg = lnbrk(msg) + "Must increase mat height, reduce bottom weight or decrease page height.";
+            angular.element(document.getElementById("mat_height")).addClass("ng-invalid");
+            angular.element(document.getElementById("page_height")).addClass("ng-invalid");
+            angular.element(document.getElementById("options_bottom_weight")).addClass("ng-invalid");
+        }
+
         return {
             valid: ok,
             message: msg
@@ -423,6 +433,17 @@ angular.module('myApp.controllers', [])
 
         }
 
+        if ($scope.canvasSupported) {
+            // make our canvasses as wide as they can be
+            var results_div = document.getElementById('previewDiv');
+            // now draw on them
+            ['front_canvas', 'back_canvas'].map( function(canvas_id) {
+                var canvas = document.getElementById(canvas_id);
+                canvas.width = results_div.offsetWidth;
+                clearCanvas(canvas);
+            });
+        }
+
         var size_validation = do_size_validations();
 
         if (!size_validation.valid) {
@@ -441,8 +462,6 @@ angular.module('myApp.controllers', [])
             // now draw on them
             ['front_canvas', 'back_canvas'].map( function(canvas_id) {
                 var canvas = document.getElementById(canvas_id);
-                canvas.width = results_div.offsetWidth;
-                clearCanvas(canvas);
                 drawSheetAndImage(canvas, canvas_id);
             });
         }
