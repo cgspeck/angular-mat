@@ -1,4 +1,4 @@
-/*globals window, Image, document*/
+/*globals window, Image, FileReader, document*/
 'use strict';
 
 /* Controllers */
@@ -12,6 +12,9 @@ angular.module('myApp.controllers', [])
     $scope._page_height = 210;
     $scope._image_width = 200;
     $scope._image_height = 200;
+    $scope.image_usemine = false;
+    $scope.userimage_dataurl = null;
+
     $scope._options_overlap = 3; // mm
     $scope._options_bottom_weight = 25;
     $scope.options_show_measurements = true;
@@ -220,7 +223,13 @@ angular.module('myApp.controllers', [])
             req_img_width = 501;
         }
 
-        img.src='http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
+        if ($scope.image_usemine && ($scope.userimage_dataurl !== null)) {
+            img.src = $scope.userimage_dataurl;
+        } else {
+            $scope.image_usemine = false;
+            img.src = 'http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
+        }
+
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
             if (canvas_id == "front_canvas") {
@@ -363,6 +372,7 @@ angular.module('myApp.controllers', [])
         angular.element(document.getElementById("image_width")).removeClass("ng-invalid");
         angular.element(document.getElementById("page_width")).removeClass("ng-invalid");
         angular.element(document.getElementById("mat_width")).removeClass("ng-invalid");
+        angular.element(document.getElementById("options_bottom_weight")).removeClass("ng-invalid");
 
         if ($scope._image_height > $scope._page_height) {
             ok = false;
@@ -392,6 +402,14 @@ angular.module('myApp.controllers', [])
             angular.element(document.getElementById("page_width")).addClass("ng-invalid");
         }
 
+        if (((($scope._mat_height - $scope._page_height)/ 2) + $scope._options_bottom_weight + $scope._page_height) > $scope._mat_height) {
+            ok = false;
+            msg = lnbrk(msg) + "Must increase mat height, reduce bottom weight or decrease page height.";
+            angular.element(document.getElementById("mat_height")).addClass("ng-invalid");
+            angular.element(document.getElementById("page_height")).addClass("ng-invalid");
+            angular.element(document.getElementById("options_bottom_weight")).addClass("ng-invalid");
+        }
+
         return {
             valid: ok,
             message: msg
@@ -414,6 +432,18 @@ angular.module('myApp.controllers', [])
 
         }
 
+        var results_div = document.getElementById('previewDiv');
+
+        if ($scope.canvasSupported) {
+            // make our canvasses as wide as they can be
+            // now draw on them
+            ['front_canvas', 'back_canvas'].map( function(canvas_id) {
+                var canvas = document.getElementById(canvas_id);
+                canvas.width = results_div.offsetWidth;
+                clearCanvas(canvas);
+            });
+        }
+
         var size_validation = do_size_validations();
 
         if (!size_validation.valid) {
@@ -427,13 +457,9 @@ angular.module('myApp.controllers', [])
         calculateDistances();
 
         if ($scope.canvasSupported) {
-            // make our canvasses as wide as they can be
-            var results_div = document.getElementById('previewDiv');
             // now draw on them
             ['front_canvas', 'back_canvas'].map( function(canvas_id) {
                 var canvas = document.getElementById(canvas_id);
-                canvas.width = results_div.offsetWidth;
-                clearCanvas(canvas);
                 drawSheetAndImage(canvas, canvas_id);
             });
         }
@@ -475,8 +501,50 @@ angular.module('myApp.controllers', [])
         $scope.updateCanvas();
     };
 
+    $scope.usemine_trigger = function() {
+        if ($scope.image_usemine && $scope.userimage_dataurl === null) {
+            $scope.showFileSelector();
+        } else {
+            $scope.updateCanvas();
+        }
+    };
+
+    $scope.showFileSelector = function() {
+        document.getElementById("fileElem").click();
+    };
+
+    $scope.showImageChangeLink = function() {
+        /*
+        Called to check whether or not the "Change" link should appear
+        */
+        return ($scope.userimage_dataurl !== null) && $scope.image_usemine;
+    };
+
+    $scope.handleFile = function(fileList) {
+        if (fileList.length === 0) {
+            return;
+        }
+
+        var file = fileList[0];
+        var imageType = /image.*/;
+    
+        if (!file.type.match(imageType)) {
+            $scope.image_usemine = false;
+            // TODO: show an error message
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $scope.$apply( function() {
+                $scope.userimage_dataurl = reader.result;
+                $scope.updateCanvas();
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+
     //initalise the form
     $scope.convertUnits();
     $scope.updateCanvas();
-
   }]);
