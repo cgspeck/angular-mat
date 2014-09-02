@@ -13,7 +13,7 @@ angular.module('myApp.controllers', [])
     $scope._image_width = 200;
     $scope._image_height = 200;
     $scope.image_usemine = false;
-    $scope._user_image = null;
+    $scope._userimage_dataurl = null;
 
     $scope._options_overlap = 3; // mm
     $scope._options_bottom_weight = 25;
@@ -223,7 +223,13 @@ angular.module('myApp.controllers', [])
             req_img_width = 501;
         }
 
-        img.src='http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
+        if ($scope.image_usemine && ($scope._userimage_dataurl !== null)) {
+            img.src = $scope._userimage_dataurl;
+        } else {
+            $scope.image_usemine = false;
+            img.src = 'http://placekitten.com/' + parseInt(req_img_width)  + '/' + parseInt(req_img_height);
+        }
+
         img.onload = function(){
             ctx.drawImage(img, calculated_image_left_offset, calculated_image_top_offset, calculated_image_width, calculated_image_height);
             if (canvas_id == "front_canvas") {
@@ -478,29 +484,34 @@ angular.module('myApp.controllers', [])
     };
 
     $scope.showFileSelector = function() {
+        // TODO: clear error message
         if ($scope.image_usemine) {
             $log.debug("usemine is true");
             document.getElementById("fileElem").click();
             //angular.element(document.getElementById("page_height")).removeClass("ng-invalid");
         } else {
             $log.debug("usemine is false");
-            updateCanvas();
+            $scope.updateCanvas();
         }
     }
 
-    $scope.handleFiles = function(fileList) {
+    $scope.handleFile = function(fileList) {
         $log.debug(fileList);
-        var file = fileList[i];
+        var file = fileList[0];
         var imageType = /image.*/;
     
         if (!file.type.match(imageType)) {
-            continue;
+            $scope.image_usemine = false;
+            // TODO: show an error message
+            return;
         }
-        var img = document.createElement("img");
+
+
+        /*var img = document.createElement("img");
         img.classList.add("obj");
         img.file = file;
         preview.appendChild(img); // Assuming that "preview" is a the div output where the content will be displayed.
-        
+        */
         var reader = new FileReader();
         /*reader.onload = (
             function(aImg) {
@@ -509,7 +520,7 @@ angular.module('myApp.controllers', [])
                 }; 
             })(img);*/
         reader.onload = function(e) {
-            $scope._user_image = reader.result;
+            $scope._userimage_dataurl = reader.result;
             $scope.updateCanvas();
         }
         reader.readAsDataURL(file);
